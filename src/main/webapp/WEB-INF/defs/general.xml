@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<!-- GENERAL defination to extend -->
+	<definition name="common" template="/WEB-INF/layout/classic.jsp" />
+	<definition name="commonUser" template="/WEB-INF/layout/classicUser.jsp" />
+	<definition name="mytaglib" template="/WEB-INF/layout/taglib.jsp" />
+	<definition name="commonAdmin" template="/WEB-INF/layout/classicAdmin.jsp" />
+	<!-- general defination to extend COMPLETE -->
+
+	<!-- error package -->
+
+	<definition name="badUser" template="/WEB-INF/jsp/error/badUser.jsp" />
+	<definition name="emailError" template="/WEB-INF/jsp/error/emailError.jsp" />
+	<definition name="logout" template="/WEB-INF/jsp/ext/logout.jsp" />
+	<definition name="invalidSession" template="/WEB-INF/jsp/ext/invalidSession.jsp" />
+	<definition name="updatePassword" template="/WEB-INF/jsp/ext/updatePassword.jsp" />
+	<!-- error package -->
+
+
+	<!-- <definition name="forgetPassword" template="/WEB-INF/jsp/ext/forgetPassword.jsp" 
+		/> -->
+	<definition name="forgetPassword" extends="common">
+		<put-attribute name="title" value="Forget Password" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/ext/forgetPassword.jsp" />
+		<put-attribute name="current" value="forgetPassword" />
+	</definition>
+	
+<!-- 	<definition name="updatePassword" extends="common">
+		<put-attribute name="title" value="Update Password" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/ext/updatePassword.jsp" />
+		<put-attribute name="current" value="updatePassword" />
+	</definition>
+ -->
+	<!-- admin pannel -->
+
+	<definition name="adminDashboard" extends="commonAdmin">
+		<put-attribute name="title" value="Admin Dashboard" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/welcome.jsp" />
+		<put-attribute name="current" value="adminDashboard" />
+	</definition>
+
+	<definition name="adminAccept" extends="commonAdmin">
+		<put-attribute name="title" value="Accept Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/accept.jsp" />
+		<put-attribute name="current" value="accept" />
+	</definition>
+
+	<definition name="adminCommit" extends="commonAdmin">
+		<put-attribute name="title" value="Commit Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/commit.jsp" />
+		<put-attribute name="current" value="commit" />
+	</definition>
+
+	<definition name="adminBankDetails" extends="commonAdmin">
+		<put-attribute name="title" value="Bank Details Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/bankDetails.jsp" />
+		<put-attribute name="current" value="bankDetails" />
+	</definition>
+
+	<definition name="adminComplaint" extends="commonAdmin">
+		<put-attribute name="title" value="Complaint Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/complaint.jsp" />
+		<put-attribute name="current" value="complaint" />
+	</definition>
+
+	<definition name="adminFileUpload" extends="commonAdmin">
+		<put-attribute name="title" value="File Upload Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/fileUpload.jsp" />
+		<put-attribute name="current" value="fileUpload" />
+	</definition>
+
+	<definition name="adminRole" extends="commonAdmin">
+		<put-attribute name="title" value="Role Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/role.jsp" />
+		<put-attribute name="current" value="role" />
+	</definition>
+
+	<definition name="adminSecurityQuestion" extends="commonAdmin">
+		<put-attribute name="title" value="Security QuestionTable" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/securityQuestion.jsp" />
+		<put-attribute name="current" value="securityQuestion" />
+	</definition>
+	<definition name="adminStatus" extends="commonAdmin">
+		<put-attribute name="title" value="Status Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/status.jsp" />
+		<put-attribute name="current" value="status" />
+	</definition>
+	<definition name="adminTransaction" extends="commonAdmin">
+		<put-attribute name="title" value="Transaction Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/transaction.jsp" />
+		<put-attribute name="current" value="transaction" />
+	</definition>
+
+	<definition name="adminUser" extends="commonAdmin">
+		<put-attribute name="title" value="User Table" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user.jsp" />
+		<put-attribute name="current" value="user" />
+	</definition>
+	<!-- admin pannel ends -->
+
+	<!-- before login -->
+
+	<definition name="index" extends="common">
+		<put-attribute name="title" value="MLM Help" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/index.jsp" />
+		<put-attribute name="current" value="index" />
+	</definition>
+
+
+	<definition name="feedback" extends="common">
+		<put-attribute name="title" value="Feedback" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/feedback.jsp" />
+		<put-attribute name="current" value="feedback" />
+	</definition>
+
+	<definition name="businessPlan" extends="common">
+		<put-attribute name="title" value="Business Plan" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/businessPlan.jsp" />
+		<put-attribute name="current" value="businessPlan" />
+	</definition>
+
+	<definition name="contactUs" extends="common">
+		<put-attribute name="title" value="Contact Us" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/contactUs.jsp" />
+		<put-attribute name="current" value="contactUs" />
+	</definition>
+
+
+	<definition name="faq" extends="common">
+		<put-attribute name="title" value="FAQ" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/faq.jsp" />
+		<put-attribute name="current" value="faq" />
+	</definition>
+
+	<!-- before login complete -->
+
+	<!-- register page -->
+	<definition name="userRegister" extends="common">
+		<put-attribute name="title" value="User Registration" />
+		<put-attribute name="body" value="/WEB-INF/jsp/userRegister.jsp" />
+		<put-attribute name="current" value="userRegister" />
+	</definition>
+	<!-- login and register page COMPLETE -->
+
+
+	<!-- User pannel -->
+	<definition name="users" extends="commonUser">
+		<put-attribute name="title" value="Users" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/users.jsp" />
+		<put-attribute name="current" value="users" />
+	</definition>
+
+	<definition name="user-details" extends="common">
+		<put-attribute name="title" value="User Details" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user-details.jsp" />
+		<put-attribute name="current" value="users" />
+	</definition>
+
+	<definition name="account" extends="common">
+		<put-attribute name="title" value="User Account" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user-account.jsp" />
+		<put-attribute name="current" value="account" />
+	</definition>
+
+	<definition name="acceptHelpReport" extends="commonUser">
+		<put-attribute name="title" value="Accept Help Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/acceptHelpReport.jsp" />
+		<put-attribute name="current" value="acceptHelpReport" />
+	</definition>
+
+	<definition name="binaryIncome" extends="commonUser">
+		<put-attribute name="title" value="Binary Income" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/binaryIncome.jsp" />
+		<put-attribute name="current" value="binaryIncome" />
+	</definition>
+
+	<definition name="commitment" extends="commonUser">
+		<put-attribute name="title" value="Make Commitment" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/commitment.jsp" />
+		<put-attribute name="current" value="commitment" />
+	</definition>
+
+	<definition name="commitmentReport" extends="commonUser">
+		<put-attribute name="title" value="Commitment Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/commitmentReport.jsp" />
+		<put-attribute name="current" value="commitmentReport" />
+	</definition>
+
+	<definition name="complaintForm" extends="commonUser">
+		<put-attribute name="title" value="Complaint Form" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/complaintForm.jsp" />
+		<put-attribute name="current" value="complaintForm" />
+	</definition>
+
+	<definition name="complaintReport" extends="commonUser">
+		<put-attribute name="title" value="complaint Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/complaintReport.jsp" />
+		<put-attribute name="current" value="complaintReport" />
+	</definition>
+
+	<definition name="directIncome" extends="commonUser">
+		<put-attribute name="title" value="Direct Income" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/directIncome.jsp" />
+		<put-attribute name="current" value="directIncome" />
+	</definition>
+
+	<definition name="dailyIncome" extends="commonUser">
+		<put-attribute name="title" value="Daily Income" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/dailyIncome.jsp" />
+		<put-attribute name="current" value="dailyIncome" />
+	</definition>
+
+	<definition name="directMember" extends="commonUser">
+		<put-attribute name="title" value="Direct Member" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/directMember.jsp" />
+		<put-attribute name="current" value="directMember" />
+	</definition>
+
+	<definition name="ewalletReport" extends="commonUser">
+		<put-attribute name="title" value="Ewallet Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/ewalletReport.jsp" />
+		<put-attribute name="current" value="ewalletReport" />
+	</definition>
+
+	<definition name="ganealogy" extends="commonUser">
+		<put-attribute name="title" value="Ganealogy" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/ganealogy.jsp" />
+		<put-attribute name="current" value="ganealogy" />
+	</definition>
+
+	<definition name="editProfile" extends="commonUser">
+		<put-attribute name="title" value="Edit Profile" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/editProfile.jsp" />
+		<put-attribute name="current" value="editProfile" />
+	</definition>
+	<definition name="memberZone" extends="commonUser">
+		<put-attribute name="title" value="Member Zone" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/memberZone.jsp" />
+		<put-attribute name="current" value="memberZone" />
+	</definition>
+	<definition name="withdrawl" extends="commonUser">
+		<put-attribute name="title" value="Withdrawl" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/withdrawl.jsp" />
+		<put-attribute name="current" value="withdrawl" />
+	</definition>
+	<definition name="withdrawlReport" extends="commonUser">
+		<put-attribute name="title" value="Withdrawl Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/withdrawlReport.jsp" />
+		<put-attribute name="current" value="withdrawlReport" />
+	</definition>
+	<definition name="myDownline" extends="commonUser">
+		<put-attribute name="title" value="My Downline" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/myDownline.jsp" />
+		<put-attribute name="current" value="myDownline" />
+	</definition>
+	<definition name="myBalance" extends="commonUser">
+		<put-attribute name="title" value="My Balance" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/myBalance.jsp" />
+		<put-attribute name="current" value="myBalance" />
+	</definition>
+
+	<definition name="editPassword" extends="commonUser">
+		<put-attribute name="title" value="Edit Password" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user/editPassword.jsp" />
+		<put-attribute name="current" value="editPassword" />
+	</definition>
+
+
+	<definition name="welcomeLetter" extends="commonUser">
+		<put-attribute name="title" value="Welcome Letter" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/welcomeLetter.jsp" />
+		<put-attribute name="current" value="welcomeLetter" />
+	</definition>
+
+</tiles-definitions>
