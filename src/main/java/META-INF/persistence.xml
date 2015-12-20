@@ -13,5 +13,6 @@
 		<class>cz.jiripinkas.jba.entity.Transaction</class>
 		<class>cz.jiripinkas.jba.entity.VerificationToken</class>
 		<class>cz.jiripinkas.jba.entity.PasswordResetToken</class>
+		<class>cz.jiripinkas.jba.entity.OTP</class>
 	</persistence-unit>
 </persistence>

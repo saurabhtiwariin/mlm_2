@@ -23,6 +23,7 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import cz.jiripinkas.jba.annotation.UniqueUsername;
+import cz.jiripinkas.jba.entity.User;
 
 @Entity
 @Table(name = "app_user")
@@ -52,7 +53,7 @@ public class User {
 	private Date doj;
 
 	private char position;
-
+	
 	private char gender;
 
 	private String mobNo;
@@ -99,6 +100,7 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Transaction> transactions;
+
 
 	/* getters and setters */
 
@@ -301,5 +303,6 @@ public class User {
 	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
 	}
+
 
 }

@@ -26,11 +26,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cz.jiripinkas.jba.entity.OTP;
 import cz.jiripinkas.jba.entity.SecurityQuestion;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.entity.VerificationToken;
 import cz.jiripinkas.jba.event.OnRegistrationCompleteEvent;
+import cz.jiripinkas.jba.repository.OTPRepository;
 import cz.jiripinkas.jba.service.SecurityQuestionService;
+import cz.jiripinkas.jba.service.SmsService;
 import cz.jiripinkas.jba.service.UserService;
 
 @Controller
@@ -40,7 +43,7 @@ public class RegisterController {
 
 	private static final Logger logger = Logger
 			.getLogger(RegisterController.class);
-	
+
 	@Autowired
 	private JavaMailSender mailSender;
 
@@ -54,13 +57,17 @@ public class RegisterController {
 	private UserService userService;
 
 	@Autowired
-    private Environment env;
+	private SmsService smsService;
+
+	@Autowired
+	private Environment env;
 
 	@Autowired
 	private SecurityQuestionService securityQuestionService;
 
 	@ModelAttribute("user")
 	private User constructUser() {
+		logger.info("constructing new user");
 		return new User();
 	}
 
@@ -80,6 +87,7 @@ public class RegisterController {
 	public String doRegister(@Valid @ModelAttribute("user") User user,
 			BindingResult result, RedirectAttributes redirectAttributes,
 			final HttpServletRequest request) {
+		logger.info("Before binding results");
 		if (result.hasErrors()) {
 			logger.info("Inside BindingResult");
 			return userRegister();
@@ -134,8 +142,7 @@ public class RegisterController {
 
 	@RequestMapping(value = "/resendRegistrationToken", method = RequestMethod.GET)
 	@ResponseBody
-	public String resendRegistrationToken(
-			final HttpServletRequest request,
+	public String resendRegistrationToken(final HttpServletRequest request,
 			@RequestParam("token") final String existingToken) {
 		final VerificationToken newToken = userService
 				.generateNewVerificationToken(existingToken);
@@ -148,8 +155,9 @@ public class RegisterController {
 
 		return "redirect:/index.html";
 		/*
-		return new GenericResponse(messages.getMessage("message.resendToken",
-				null, request.getLocale()));*/
+		 * return new GenericResponse(messages.getMessage("message.resendToken",
+		 * null, request.getLocale()));
+		 */
 	}
 
 	private final SimpleMailMessage constructResendVerificationTokenEmail(
@@ -176,6 +184,27 @@ public class RegisterController {
 		return available.toString();
 	}
 
+	@RequestMapping("/sendOTP")
+	@ResponseBody
+	public void sendOTP(@RequestParam String mobNo) {
+		String otp = smsService.getNewOTP();
+		logger.error("sendOTP() - "+otp);
+		smsService.sendOTPAndPersist(mobNo, otp);
+	}
+
+	@RequestMapping("/verifyOTP")
+	@ResponseBody
+	public String verifyOTP(@RequestParam String otp) {
+		return smsService.verifyOTP(otp);
+	}
+
+	@RequestMapping("/uniqueEmail")
+	@ResponseBody
+	public String uniqueEmail(@RequestParam String email) {
+		Boolean available = userService.findUserByEmail(email) == null;
+		return available.toString();
+	}
+
 	@RequestMapping("/availableSponser")
 	@ResponseBody
 	public String availableSponser(@RequestParam Integer userId) {
@@ -183,18 +212,102 @@ public class RegisterController {
 		return available.toString();
 	}
 
+	@RequestMapping("/availablePositions")
+	@ResponseBody
+	public String availablePositions(
+			@RequestParam("sponserId") Integer sponserId) {
+		int l = 0, r = 0;
+		String res = "";
+		if (sponserId == null) {
+			return "";
+		}
+		User user = userService.findOne(sponserId);
+
+		res += "<select name=\"position\" id=\"position\">";
+
+		if (user != null) {
+			List<User> downlineUsers = userService.findAllDirectMembers(user);
+
+			for (User usr : downlineUsers) {
+				if (usr.getPosition() == 'R') {
+					r = 1;
+				}
+				if (usr.getPosition() == 'L') {
+					l = 1;
+				}
+			}
+
+			if (l == 0 && r == 0) {
+
+				res += "<option value=\"L\">Left</option>";
+				res += "<option value=\"R\">Right</option>";
+
+			}
+			if (l == 0 && r == 1) {
+
+				res += "<option value=\"L\">Left</option>";
+
+			}
+			if (l == 1 && r == 0) {
+
+				res += "<option value=\"R\">Right</option>";
+
+			}
+			if (l == 1 && r == 1) {
+				return "<p class=\"help-block\">Sorry &#128546 It seems sponser ID has already filled his right and left downlines.</p>";
+			}
+
+			res += "</select>";
+			return res;
+		}
+		return "";
+	}
+
 	@RequestMapping("/availableSponserName")
 	@ResponseBody
 	public String availableSponserName(@RequestParam Integer sponserId) {
-
+		int l = 0, r = 0;
 		String res = null;
+
+		if (sponserId == null) {
+			return "You have an option to enter Sponser. He will get 1 day referral bonus on his available balance.";
+		}
+
 		User user = userService.findOne(sponserId);
+
 		if (user != null) {
-			res = "<input type=\"text\" value=\"" + user.getName()
-					+ "\" readonly=\"readonly\" />";
+			List<User> downlineUsers = userService.findAllDirectMembers(user);
+			logger.info(downlineUsers.toArray());
+			for (User usr : downlineUsers) {
+				if (usr.getPosition() == 'R') {
+					r = 1;
+				}
+				if (usr.getPosition() == 'L') {
+					l = 1;
+				}
+			}
+			if (l == 0 && r == 0) {
+				res = "<b>Mr/Ms "
+						+ user.getName()
+						+ " will be getting 1 day bonus balance as sponser's benefit. His both position is empty.</b>";
+			}
+			if (l == 0 && r == 1) {
+				res = "<b>Mr/Ms "
+						+ user.getName()
+						+ " will be getting 1 day bonus balance as sponser's benefit. His left position is empty.</b>";
+			}
+			if (l == 1 && r == 0) {
+				res = "<b>Mr/Ms "
+						+ user.getName()
+						+ " will be getting 1 day bonus balance as sponser's benefit. His right position is empty.</b>";
+			}
+			if (l == 1 && r == 1) {
+				return "<p class=\"help-block\">Sorry &#128546 It seems sponser ID has already filled his right and left downlines.</p>";
+			}
+
 			return res;
 		} else {
-			return "false";
+			return "<p class=\"help-block\">Sorry &#128546 It seems you entered wrong sponser ID.</p>";
 		}
 	}
 

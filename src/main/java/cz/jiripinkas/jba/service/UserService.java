@@ -37,6 +37,9 @@ public class UserService {
 	private UserRepository userRepository;
 
 	@Autowired
+	private CommitService commitService;
+
+	@Autowired
 	private CommitRepository commitRepository;
 
 	@Autowired
@@ -68,6 +71,13 @@ public class UserService {
 		tokenRepository.save(myToken);
 	}
 
+	public void createOTPForUser(final User usr,
+			final String otp) {
+		User user = findOne(usr.getId());
+		user.setOtp(otp);
+		userRepository.save(user);
+	}
+	
 	public User findOne(int id) {
 		// TODO Auto-generated method stub
 		return userRepository.findOne(id);
@@ -86,24 +96,41 @@ public class UserService {
 	 */
 	public void save(User user) {
 		// TODO Auto-generated method stub
-		user.setEnabled(true);
-
+		user.setEnabled(false);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword()));
+
+		user.setSecurityAnswer(encoder.encode(user.getSecurityAnswer()));
 
 		List<Role> roles = new ArrayList<Role>();
 		roles.add(roleRepository.findByName("ROLE_USER"));
 		user.setRoles(roles);
 
 		user.setDoj(new Date(System.currentTimeMillis()));
-		/* adding current user to sponser's list of users */
 
-		/*
-		 * User sponser=userRepository.findOne((user.getSponser()).getId());
-		 * List<User> list = new ArrayList<User>(); list.add(user);
-		 * sponser.setDownlineUsers(list);
-		 */
+		User sponser = user.getSponser();
+		if (sponser != null) {
+			giveReferralBonusAndPersist(sponser);
+		}
+
 		userRepository.save(user);
+	}
+
+	private void giveReferralBonusAndPersist(User sponser) {
+		// TODO Auto-generated method stub
+		long var = 0;
+		User usr = findOne(sponser.getId());
+		List<Commit> commits = commitRepository.findByUser(sponser);
+		for (Commit commit : commits) {
+			var += commit.getAmount();
+		}
+
+		long bal = usr.getBalance();
+		long newBal = bal + (var / 10);
+
+		usr.setBalance(newBal);
+		userRepository.save(usr);
+
 	}
 
 	/*
@@ -228,7 +255,7 @@ public class UserService {
 			for (Commit commit : commits) {
 				var += commit.getAmount();
 			}
-			
+
 			long bal = user.getBalance();
 			long newBal = bal + (var / 10);
 			user.setBalance(newBal);
