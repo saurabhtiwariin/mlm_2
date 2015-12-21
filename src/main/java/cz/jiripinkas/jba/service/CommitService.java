@@ -92,8 +92,10 @@ public class CommitService {
 
 	public void setStatus(Commit commit, int status) {
 		// TODO Auto-generated method stub
+		logger.info("Inside SetStatusCommit()");
 		commit.setStatus(statusRepository.findOne(status));
 		commitRepository.save(commit);
+		logger.info("Outside SetStatusCommit()");
 	}
 
 	/*

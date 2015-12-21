@@ -263,4 +263,12 @@ public class UserService {
 		}
 	}
 
+	public void updateBalance(User user, long amount) {
+		// TODO Auto-generated method stub
+		logger.info("Inside updateBalance()");
+		user.setBalance(user.getBalance()-amount) ;
+		userRepository.save(user);
+		logger.info("Inside updateBalance()");
+	}
+
 }

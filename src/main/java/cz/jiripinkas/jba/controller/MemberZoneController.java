@@ -140,16 +140,8 @@ public class MemberZoneController {
 	@RequestMapping(value = "/acceptPayment")
 	public String acceptPayment(
 			@RequestParam(value = "acceptId") Integer acceptId) {
-		Accept accept = acceptService.findOne(acceptId);
-		if ((accept.getStatus()).getId() != 3) {
 
-			acceptService.setStatus(accept, 3);
-			acceptService.setConfDate(accept,
-					new Date(System.currentTimeMillis()));
-			commitService.setStatus(accept.getCommit(), 3);
-			commitService.setConfDate(accept.getCommit(),
-					new Date(System.currentTimeMillis()));
-		}
+		acceptService.acceptPayment(acceptId);
 		return "redirect:/user/memberZone.html";
 	}
 

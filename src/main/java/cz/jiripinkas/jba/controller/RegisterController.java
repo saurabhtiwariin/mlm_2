@@ -211,7 +211,9 @@ public class RegisterController {
 		Boolean available = userService.findOne(userId) != null;
 		return available.toString();
 	}
-
+/*
+ * used to get position drop down according binary tree rule
+ * 
 	@RequestMapping("/availablePositions")
 	@ResponseBody
 	public String availablePositions(
@@ -262,7 +264,7 @@ public class RegisterController {
 		}
 		return "";
 	}
-
+*/
 	@RequestMapping("/availableSponserName")
 	@ResponseBody
 	public String availableSponserName(@RequestParam Integer sponserId) {
@@ -275,6 +277,11 @@ public class RegisterController {
 
 		User user = userService.findOne(sponserId);
 
+		res = "<b>Mr/Ms "
+				+ user.getName()
+				+ " will be getting 1 day bonus balance as sponser's benefit. His both position is empty.</b>";
+		return res;
+		/*
 		if (user != null) {
 			List<User> downlineUsers = userService.findAllDirectMembers(user);
 			logger.info(downlineUsers.toArray());
@@ -309,6 +316,7 @@ public class RegisterController {
 		} else {
 			return "<p class=\"help-block\">Sorry &#128546 It seems you entered wrong sponser ID.</p>";
 		}
+*/
 	}
 
 	@RequestMapping(value = "/allSecurityQuestion", method = RequestMethod.GET)

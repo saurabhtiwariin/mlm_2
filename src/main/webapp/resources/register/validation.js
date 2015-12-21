@@ -8,10 +8,10 @@ $(document).ready(function() {
 	}, function(event) {
 
 		var id = $("#sponser").val();
-
+/*
 		$("#pos").load('/register/availablePositions.html', {
 			"sponserId" : id,
-		});
+		});*/
 
 		$("#sponserName").load('/register/availableSponserName.html', {
 			"sponserId" : id

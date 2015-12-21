@@ -182,8 +182,9 @@
 								<br />
 							</p>
 							<p>
-								<a href='<spring:url value="/register.html"/>'
-									class="btn btn-lg btn-primary" role="button">Sign up today</a>
+								<a href='<spring:url value="/register.html#regFormBegin"/>'
+									class="btn btn-lg btn-primary" role="button"><spring:message
+										code="label.form.loginSignUp"></spring:message></a>
 							</p>
 						</div>
 					</div>
@@ -196,7 +197,7 @@
 								<spring:message code="index.marque.two" />
 							</p>
 							<p>
-								<a href='<spring:url value="/register.html"/>'
+								<a href='<spring:url value="/register.html#regFormBegin"/>'
 									class="btn btn-lg btn-primary" role="button"><spring:message
 										code="label.form.loginSignUp"></spring:message></a>
 							</p>
@@ -225,11 +226,13 @@
     ================================================== -->
 	<!-- Wrap the rest of the page in another container to center all the content. -->
 
-	<div class="container marketing">
-
+	<div class="container marketing" id="regFormBegin">
+	
+	<h1>Please fill in the following fields...</h1>
+	<br> <br>
 		<tiles:insertAttribute name="body" />
 
-		<br> <br> <br>
+		
 
 		<!-- Three columns of text below the carousel -->
 		<div class="row">

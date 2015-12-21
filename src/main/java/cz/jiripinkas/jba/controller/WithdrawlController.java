@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cz.jiripinkas.jba.entity.Accept;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.service.AcceptService;
+import cz.jiripinkas.jba.service.UserService;
 
 @Controller
 @EnableWebMvc
@@ -26,6 +27,7 @@ public class WithdrawlController {
 	private static final Logger logger = Logger
 			.getLogger(WithdrawlController.class);
 
+	
 	@Autowired
 	private AcceptService acceptService;
 
@@ -46,22 +48,23 @@ public class WithdrawlController {
 			HttpSession session, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
-			logger.info("Inside BindingResult");
+			logger.info("Inside BindingResult withdrawl");
 			return "/withdrawl";
 		}
 		User user = (User) session.getAttribute("currentUser");
-		
-		if (accept.getAmount()==0 || user.getBalance()<accept.getAmount()) {
-			redirectAttributes.addFlashAttribute("lowBal", true);	
+
+		if (accept.getAmount() == 0 || user.getBalance() < accept.getAmount()) {
+			redirectAttributes.addFlashAttribute("lowBal", true);
 			return "redirect:/user/memberZone.html";
 		}
-		if(accept.getAmount() % 1000 != 0){
-			redirectAttributes.addFlashAttribute("invalidAmount", true);	
-			return "redirect:/user/memberZone.html";	
+		if (accept.getAmount() % 1000 != 0) {
+			redirectAttributes.addFlashAttribute("invalidAmount", true);
+			return "redirect:/user/memberZone.html";
 		}
-			redirectAttributes.addFlashAttribute("success", true);		
-			acceptService.save(accept, user);
-			
+
+		redirectAttributes.addFlashAttribute("success", true);
+		acceptService.save(accept, user);
+
 		return "redirect:/user/memberZone.html";
 	}
 }

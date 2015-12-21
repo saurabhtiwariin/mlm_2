@@ -6,7 +6,8 @@
 	cssClass="form-horizontal registrationForm">
 
 	<c:if test="${success eq true}">
-		<div class="alert alert-success">Registration successful. Please check your email to enable your account.</div>
+		<div class="alert alert-success">Registration successful. Please
+			check your email to enable your account.</div>
 	</c:if>
 
 	<div class="form-group" id="sponserDiv">
@@ -27,6 +28,12 @@
 	<div class="form-group">
 		<label for="position" class="col-sm-2 control-label">Position:</label>
 		<div class="col-sm-10" id="pos">
+			
+			<form:select path="position">
+				<form:option value="L">Left</form:option>
+				<form:option value="R">Right</form:option>
+			</form:select>
+
 			<form:errors path="position" />
 		</div>
 	</div>
@@ -64,7 +71,7 @@
 		</div>
 	</div>
 
-<%-- 	<div class="form-group">
+	<%-- 	<div class="form-group">
 		<label for="otp" class="col-sm-2 control-label">Verification
 			Code:</label>
 		<div class="col-sm-10">
@@ -76,7 +83,8 @@
 	<div class="form-group">
 		<label for="email" class="col-sm-2 control-label" id="emaillabel">Email:</label>
 		<div class="col-sm-10">
-			<form:input path="email" placeholder="Enter email ID." cssClass="form-control" />
+			<form:input path="email" placeholder="Enter email ID."
+				cssClass="form-control" />
 			<form:errors path="email" />
 		</div>
 	</div>
@@ -84,7 +92,8 @@
 	<div class="form-group">
 		<label for="address" class="col-sm-2 control-label">Address:</label>
 		<div class="col-sm-10">
-			<form:input path="address" placeholder="Enter your home address" cssClass="form-control" />
+			<form:input path="address" placeholder="Enter your home address"
+				cssClass="form-control" />
 			<form:errors path="address" />
 		</div>
 	</div>
@@ -151,7 +160,8 @@
 	<div class="form-group">
 		<label for="city" class="col-sm-2 control-label">City:</label>
 		<div class="col-sm-10">
-			<form:input path="city" placeholder="Enter city where you live." cssClass="form-control" />
+			<form:input path="city" placeholder="Enter city where you live."
+				cssClass="form-control" />
 			<form:errors path="city" />
 		</div>
 	</div>
@@ -170,14 +180,16 @@
 		<label for="securityAnswer" class="col-sm-2 control-label">Security
 			Answer:</label>
 		<div class="col-sm-10">
-			<form:input path="securityAnswer" placeholder="Enter security answer." cssClass="form-control" />
+			<form:input path="securityAnswer"
+				placeholder="Enter security answer." cssClass="form-control" />
 			<form:errors path="securityAnswer" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label for="password" class="col-sm-2 control-label">Password:</label>
 		<div class="col-sm-10">
-			<form:password path="password" placeholder="Enter your password" cssClass="form-control" />
+			<form:password path="password" placeholder="Enter your password"
+				cssClass="form-control" />
 			<form:errors path="password" />
 		</div>
 	</div>
@@ -185,7 +197,8 @@
 		<label for="password" class="col-sm-2 control-label">Confirm
 			Password:</label>
 		<div class="col-sm-10">
-			<input type="password" name="password_again" placeholder="Re-Enter the same password again." id="password_again"
+			<input type="password" name="password_again"
+				placeholder="Re-Enter the same password again." id="password_again"
 				class="form-control" />
 		</div>
 	</div>

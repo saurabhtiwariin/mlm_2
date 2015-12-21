@@ -18,6 +18,7 @@ import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.repository.AcceptRepository;
 import cz.jiripinkas.jba.repository.CommitRepository;
 import cz.jiripinkas.jba.repository.StatusRepository;
+import cz.jiripinkas.jba.repository.UserRepository;
 
 @Service
 @Transactional
@@ -29,10 +30,19 @@ public class AcceptService {
 	private StatusRepository statusRepository;
 
 	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
 	private AcceptRepository acceptRepository;
 
 	@Autowired
 	private CommitRepository commitRepository;
+
+	@Autowired
+	private CommitService commitService;
+
+	@Autowired
+	private UserService userService;
 
 	public void save(Accept accept, User user) {
 		// TODO Auto-generated method stub
@@ -40,11 +50,10 @@ public class AcceptService {
 		accept.setUser(user);
 		accept.setStatus(statusRepository.findOne(1));
 		user.setBalance(user.getBalance() - accept.getAmount());
+		userRepository.save(user);
 		acceptRepository.saveAndFlush(accept);
 	}
 
-	
-	
 	public List<Accept> getHelpData(User acceptor) {
 		// TODO Auto-generated method stub
 		/*
@@ -94,29 +103,43 @@ public class AcceptService {
 		acceptRepository.save(accept);
 	}
 
-
-
 	public void setStatus(Accept accept, int statusId) {
 		// TODO Auto-generated method stub
+		logger.info("Inside setStatus()");
 		accept.setStatus(statusRepository.findOne(statusId));
 		acceptRepository.save(accept);
+		logger.info("Outside setStatus()");
 	}
-
-
 
 	public void setConfDate(Accept accept, Date date) {
 		// TODO Auto-generated method stub
+		logger.info("Inside setconf date accept()");
 		accept.setConfDate(date);
 		acceptRepository.save(accept);
+		logger.info("outside setconf date accept()");
 	}
-
-
 
 	public Accept findOne(Integer acceptId) {
 		// TODO Auto-generated method stub
 		return acceptRepository.findOne(acceptId);
 	}
 
+	public void acceptPayment(Integer acceptId) {
+		// TODO Auto-generated method stub
+		logger.info("Inside acceptPayment()");
+		Accept accept = findOne(acceptId);
+		logger.info("Accept Id = "+accept.getId());
+		
+		if ((accept.getStatus()).getId() != 3) {
+			logger.info("Inside acceptPayment() if");
+			setStatus(accept, 3);
+			setConfDate(accept,new Date(System.currentTimeMillis()));
+			commitService.setStatus(accept.getCommit(), 3);
+			commitService.setConfDate(accept.getCommit(),new Date(System.currentTimeMillis()));
+			
+		}
+
+	}
 	/*
 	 * @Transactional public User getAllAccepts(User user) { // TODO
 	 * Auto-generated method stub List<Commit> commits =

@@ -32,7 +32,9 @@ public class TransactionController {
 
 	@RequestMapping("/myBalance")
 	public String getMyBalance(Model model,HttpSession session) {
-		model.addAttribute("user", (User) session.getAttribute("currentUser"));
+		User user = (User) session.getAttribute("currentUser");
+	//	user = userService.findOne(user.getId());
+		model.addAttribute("user", user);
 		return "myBalance";
 	}
 	
