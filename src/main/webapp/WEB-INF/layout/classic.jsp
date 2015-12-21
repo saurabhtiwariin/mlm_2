@@ -228,7 +228,7 @@
 
 	<div class="container marketing" id="regFormBegin">
 	
-	<h1>Please fill in the following fields...</h1>
+	
 	<br> <br>
 		<tiles:insertAttribute name="body" />
 

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../layout/taglib.jsp"%>
-
+<h1>Please fill in the following fields...</h1>
+<br/><br/>
 <form:form commandName="user"
 	cssClass="form-horizontal registrationForm">
 
