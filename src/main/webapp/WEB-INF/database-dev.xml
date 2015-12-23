@@ -14,6 +14,8 @@
 		<property name="username" value="${jdbc.dev.username}" />
 		<property name="password" value="${jdbc.dev.password}" />
 	</bean>
+	
+	
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		id="emf">
