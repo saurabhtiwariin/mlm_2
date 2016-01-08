@@ -50,9 +50,6 @@ public class Accept {
 	@OneToOne(mappedBy = "accept", cascade = CascadeType.REMOVE)
 	private FileUpload fileUpload;
 
-	@OneToOne(mappedBy = "accept")
-	private Transaction transaction;
-
 	public Integer getId() {
 		return id;
 	}
@@ -109,14 +106,6 @@ public class Accept {
 
 	public void setFileUpload(FileUpload fileUpload) {
 		this.fileUpload = fileUpload;
-	}
-
-	public Transaction getTransaction() {
-		return transaction;
-	}
-
-	public void setTransaction(Transaction transaction) {
-		this.transaction = transaction;
 	}
 
 	public User getUser() {

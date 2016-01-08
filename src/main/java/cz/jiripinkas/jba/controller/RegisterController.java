@@ -26,12 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import cz.jiripinkas.jba.entity.OTP;
 import cz.jiripinkas.jba.entity.SecurityQuestion;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.entity.VerificationToken;
-import cz.jiripinkas.jba.event.OnRegistrationCompleteEvent;
-import cz.jiripinkas.jba.repository.OTPRepository;
 import cz.jiripinkas.jba.service.SecurityQuestionService;
 import cz.jiripinkas.jba.service.SmsService;
 import cz.jiripinkas.jba.service.UserService;
@@ -76,7 +73,7 @@ public class RegisterController {
 		logger.info("Get request to registration page");
 		return "userRegister";
 	}
-
+	
 	/*
 	 * @InitBinder public void initBinder(WebDataBinder binder){
 	 * logger.info("Inside initBinder"); binder.setDisallowedFields("sponser");
@@ -84,24 +81,27 @@ public class RegisterController {
 	 */
 
 	@RequestMapping(method = RequestMethod.POST)
-	public String doRegister(@Valid @ModelAttribute("user") User user,
+	public String doRegister(@Valid @ModelAttribute("user") User user,@ModelAttribute("for") String regFor,
 			BindingResult result, RedirectAttributes redirectAttributes,
 			final HttpServletRequest request) {
-		logger.info("Before binding results");
+		logger.info("Before binding results"+regFor);
 		if (result.hasErrors()) {
 			logger.info("Inside BindingResult");
 			return userRegister();
 		}
 
-		logger.info("Before save");
+		logger.info("Saving new user "+user.getName()+" in database.");
+		
+		userService.save(user,regFor);
 
-		userService.save(user);
+		logger.info("sending mail the enabling link because if not mailed the registration could not be completed.");
 
-		final String appUrl = "http://" + request.getServerName() + ":"
+/*		final String appUrl = "http://" + request.getServerName() + ":"
 				+ request.getServerPort() + request.getContextPath();
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
 				request.getLocale(), appUrl));
-
+*/
+		
 		redirectAttributes.addFlashAttribute("success", true);
 		return "redirect:/register.html";
 	}
@@ -198,6 +198,12 @@ public class RegisterController {
 		return smsService.verifyOTP(otp);
 	}
 
+	@RequestMapping("/uniquePanNo")
+	@ResponseBody
+	public String uniquePanNo(@RequestParam String panNo) {
+		Boolean available = userService.findUserByPanNO(panNo) == null;
+		return available.toString();
+	}
 	@RequestMapping("/uniqueEmail")
 	@ResponseBody
 	public String uniqueEmail(@RequestParam String email) {

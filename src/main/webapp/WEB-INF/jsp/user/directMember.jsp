@@ -3,48 +3,115 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-<div class="myClass">
+  <style type='text/css'>
+ 
+table {
+    border: 1px solid black;
+    width:100%;
+}
+th {
+    border: 1px solid black;
+    padding: 5px;
+    background-color:grey;
+    color: white;
+}
+td {
+background-color:white;
+    color: black;
+    border: 1px solid black;
+    padding: 5px;
+}
+input {
+    font-size: 12pt;
+    font-family: Calibri;
+}
+  </style>
+  
 
 
+<!--SERVICES SECTION-->
+<section class="for-full-back color-bg-one">
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-8 col-md-offset-2 ">
+				<h1>
+					<i class="fa fa-rocket faa-pulse animated  "></i>DIRECT MEMBERS
+				</h1>
 
-	<br />
+			</div>
 
-	<div>
-		<table class="myGridStyle" cellspacing="0" cellpadding="4"
-			id="ContentPlaceHolder1_GridView1"
-			style="color: #333333; width: 1070px; border-collapse: collapse; margin-left: 20px; font-family: Verdana">
-			<tr
-				style="color: White; background-color: #3B3737; border-style: Inset; font-weight: bold;">
-				<th scope="col">User ID</th>
-				<th scope="col">User Name</th>
-				<th scope="col">Mobile</th>
-				<th scope="col">Status</th>
-				<th scope="col">Date of Joining</th>
-			</tr>
-		<c:if test="${not empty user.downlineUsers}">			
-			<c:forEach items="${user.downlineUsers}" var="downLineUser">
-				<tr align="center"
-					style="background-color: #E3EAEB; border-style: Solid;">
-					<td><c:out value="${downLineUser.id}"></c:out></td>
-					<td><c:out value="${downLineUser.name}"></c:out></td>
-					<td><c:out value="${downLineUser.mobNo}"></c:out></td>
-					<c:if test="${downLineUser.enabled eq true}">
-						<td>ACTIVE</td>
-					</c:if>
-					<c:if test="${downLineUser.enabled eq false}">
-						<td>INACTIVE</td>
-					</c:if>
-					<td><c:out value="${downLineUser.doj}"></c:out></td>
-				</tr>
-			</c:forEach>
-			</c:if>
-		</table>
+		</div>
 	</div>
-	<br /> <input type="submit" name="ctl00$ContentPlaceHolder1$btnimport"
-		value="Import To Excel" id="ContentPlaceHolder1_btnimport"
-		class="btn btn-gray5" /> <input type="hidden"
-		name="ctl00$ContentPlaceHolder1$hduid" id="ContentPlaceHolder1_hduid"
-		value="1685" />
+</section>
+
+<!-- SOCIAL STATS SECTION-->
+<section>
+	<div class="container">
+		<div class="row pad-top-botm">
 
 
-</div>
+
+			<div class="form-group" id="dvData">
+
+				<table>
+					<tr>
+						<th>User ID</th>
+						<th>User Name</th>
+						<th>Mobile</th>
+						<th>Status</th>
+						<th>Date of Joining</th>
+					</tr>
+					<c:if test="${not empty user.downlineUsers}">
+						<c:forEach items="${user.downlineUsers}" var="downLineUser">
+							<tr>
+								<td><c:out value="${downLineUser.id}"></c:out></td>
+								<td><c:out value="${downLineUser.name}"></c:out></td>
+								<td><c:out value="${downLineUser.mobNo}"></c:out></td>
+								<c:if test="${downLineUser.enabled eq true}">
+									<td>ACTIVE</td>
+								</c:if>
+								<c:if test="${downLineUser.enabled eq false}">
+									<td>INACTIVE</td>
+								</c:if>
+								<td><c:out value="${downLineUser.doj}"></c:out></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</table>
+			</div>
+						<script type='text/javascript'>
+				//<![CDATA[
+				$(function() {
+					$("#btnExport").click(
+							function(e) {
+								window.open('data:application/vnd.ms-excel,'
+										+ $('#dvData').html());
+								e.preventDefault();
+							});
+				});//]]>
+			</script>
+
+			<div class="form-group">
+				<button id="btnExport"
+					class="btn btn-success btn-lg wow rotateIn animated "
+					data-wow-delay="0.8s">Import To Excel</button>
+			</div>
+			<div class="form-group">
+				<p>
+					<br> <br> <br>
+				</p>
+			</div>
+			<div class="form-group">
+				<p></p>
+			</div>
+
+
+
+
+
+
+		</div>
+
+	</div>
+</section>
+

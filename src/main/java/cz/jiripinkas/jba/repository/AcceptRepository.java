@@ -19,6 +19,8 @@ public interface AcceptRepository extends JpaRepository<Accept, Integer>{
 	@Query("Select a from Accept a where a.commit = ?1 and a.status < 4")
 	Accept giveHelpData(Commit commit);
 
+	
+	List<Accept> findByUser(User user);
 
 //	public List<Accept> findAllByUserAndStatus(User acceptor, Status status);
 //	

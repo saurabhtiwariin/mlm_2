@@ -7,6 +7,6 @@ import cz.jiripinkas.jba.entity.FileUpload;
 public interface FileUploadRepository extends
 		JpaRepository<FileUpload, Integer> {
 
-	FileUpload findByFileName(String name);
-
+/*	FileUpload findByFileName(String name);
+*/
 }

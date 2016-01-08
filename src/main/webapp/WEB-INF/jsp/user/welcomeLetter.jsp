@@ -28,7 +28,7 @@
 											<tr
 												style="font-size: xx-large; font-family: Verdana; font-weight: bold">
 												<td></td>
-												<td align="center" style="height: 93px">HELP-500</td>
+												<td align="center" style="height: 93px">MMMMINR</td>
 												<td>&nbsp;</td>
 											</tr>
 											<tr style="color: #000000; height: 160px;">
@@ -219,7 +219,7 @@
 												<td align="left"><span
 													id="ctl00_ContentPlaceHolder1_Label9"
 													style="font-weight: bold; color: #FF0000"> Dear <span
-														id="ContentPlaceHolder1_lbl_name">Piyush</span></span></td>
+														id="ContentPlaceHolder1_lbl_name">${user.name}</span></span></td>
 												<td>&nbsp;</td>
 											</tr>
 											<tr style="color: #000000">
@@ -240,11 +240,11 @@
 																<span style="font-family: arial, helvetica, sans-serif"><span
 																	style="font-size: medium; font-family: Georgia;">A
 																		journey of a thousand miles must begin with a single
-																		step. I’d like to welcome you to HELP-500. We are
+																		step. I’d like to welcome you to MMMMINR. We are
 																		excited that you have accepted our business offer and
 																		agreed upon your start date. I trust that this letter
 																		finds you mutually excited about your new opportunity
-																		with HELP-500. Each of us will play a role to ensure
+																		with MMMINR. Each of us will play a role to ensure
 																		your successful integration into the company. Your
 																		agenda will involve planning your orientation with
 																		company and setting some initial work goals so that
@@ -297,7 +297,7 @@
 											<tr>
 												<td>&nbsp;</td>
 												<td align="left"><b><span
-														style="color: #0000FF; font-size: 14pt;"> HELP-500</span></b>
+														style="color: #0000FF; font-size: 14pt;"> MMMINR</span></b>
 												</td>
 												<td>&nbsp;</td>
 											</tr>
@@ -305,7 +305,7 @@
 												<td>&nbsp;</td>
 												<td align="left"><span
 													id="ctl00_ContentPlaceHolder1_Label19"
-													style="font-family: Verdana; font-size: 12pt; font-weight: 700; color: #ff0000">help-500.in</span>
+													style="font-family: Verdana; font-size: 12pt; font-weight: 700; color: #ff0000">MMMINR.com</span>
 												</td>
 												<td>&nbsp;</td>
 											</tr>

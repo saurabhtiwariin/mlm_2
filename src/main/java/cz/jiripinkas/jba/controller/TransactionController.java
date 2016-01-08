@@ -1,8 +1,7 @@
 package cz.jiripinkas.jba.controller;
 
+import java.security.Principal;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,24 +30,18 @@ public class TransactionController {
 	private TransactionService transactionService;
 
 	@RequestMapping("/myBalance")
-	public String getMyBalance(Model model,HttpSession session) {
-		User user = (User) session.getAttribute("currentUser");
+	public String getMyBalance(Model model,Principal principal) {
+		User user = userService.getUser(principal);
 	//	user = userService.findOne(user.getId());
 		model.addAttribute("user", user);
 		return "myBalance";
 	}
 	
-	@RequestMapping("/ewalletReport")
-	public String getEwalletReport(Model model,HttpSession session) {
-		
-		List<Transaction> transactions =transactionService.findByUser((User) session.getAttribute("currentUser"));
-		model.addAttribute("transactions", transactions);
-		return "ewalletReport";
-	}
 	
 	@RequestMapping("/dailyIncome")
-	public String getDailyIncome(Model model,HttpSession session) {
-		List<Transaction> transactions =transactionService.findByUser((User) session.getAttribute("currentUser"));
+	public String getDailyIncome(Model model,Principal principal) {
+		User user = userService.findOne(principal);
+		List<Transaction> transactions =transactionService.findByUser(user,"dailyIncome");
 		model.addAttribute("transactions", transactions);
 		return "dailyIncome";
 	}

@@ -1,6 +1,7 @@
 package cz.jiripinkas.jba.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import cz.jiripinkas.jba.entity.User;
+import cz.jiripinkas.jba.service.AcceptService;
 import cz.jiripinkas.jba.service.BankDetailsService;
 import cz.jiripinkas.jba.service.CommitService;
 import cz.jiripinkas.jba.service.TransactionService;
@@ -28,14 +30,16 @@ public class HyperlinkControllerUser {
 
 	@Autowired
 	private CommitService commitService;
-
+	
+	@Autowired
+	private AcceptService acceptService;
+	
 	@Autowired
 	private TransactionService transactionService;
-	
+
 	@Autowired
 	private BankDetailsService bankDetailsService;
-	
-	
+
 	@RequestMapping("/binaryIncome")
 	public String getBinaryIncome() {
 		return "binaryIncome";
@@ -47,8 +51,19 @@ public class HyperlinkControllerUser {
 	}
 
 	@RequestMapping("/withdrawlReport")
-	public String getWithdrawlReport() {
+	public String getWithdrawlReport(Model model, Principal principal) {
+		User user = userService.getUser(principal);
+		user.setAccepts(acceptService.getHelpData(user));
+		model.addAttribute("user",user);
 		return "withdrawlReport";
+	}
+	
+	@RequestMapping("/transactionReport")
+	public String getTransactionReport(Model model, Principal principal) {
+		User user = userService.getUser(principal);
+		user.setTransactions(transactionService.getTableData(user)) ;
+		model.addAttribute("user",user);
+		return "transactionReport";
 	}
 
 	@RequestMapping("/acceptHelpReport")
@@ -59,8 +74,27 @@ public class HyperlinkControllerUser {
 	@RequestMapping("/ganealogy")
 	public String getGanealogy(Model model, Principal principal) {
 		User user = userService.getUser(principal);
-		user.setDownlineUsers(userService.findAllDirectMembers(user));
+		List<User> downlineUsers = userService.findAllDirectMembers(user);
+
+		/*		int cL = 0, cR = 0,rows=0;
+		for (User usr : downlineUsers) {
+			if (usr.getPosition() == 'L')
+				cL++;
+			if (usr.getPosition() == 'R')
+				cR++;
+		}
+		if (cR>=cL) {
+			rows=cR;
+		}else{
+			rows=cL;
+		}
+		
+		logger.info(" NO of rows of downline users : " + rows);
+		model.addAttribute("rows", rows);
+*/
+		user.setDownlineUsers(downlineUsers);
 		model.addAttribute("user", user);
+
 		return "ganealogy";
 	}
 
@@ -68,7 +102,6 @@ public class HyperlinkControllerUser {
 	public String feedback() {
 		return "feedback";
 	}
-
 
 	@RequestMapping("/welcomeLetter")
 	public String getWelcomeLetter(Model model, Principal principal) {

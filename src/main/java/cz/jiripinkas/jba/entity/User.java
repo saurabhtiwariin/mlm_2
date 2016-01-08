@@ -23,12 +23,11 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import cz.jiripinkas.jba.annotation.UniqueUsername;
-import cz.jiripinkas.jba.entity.User;
 
 @Entity
 @Table(name = "app_user")
-@SelectBeforeUpdate(value=true)
-@DynamicUpdate(value=true)
+@SelectBeforeUpdate(value = true)
+@DynamicUpdate(value = true)
 public class User {
 
 	@Id
@@ -42,19 +41,20 @@ public class User {
 	@OneToMany(mappedBy = "sponser")
 	private List<User> downlineUsers;
 
-	@Size(min = 3, message = "Name must be at least 3 characters!")
+	@Size(min = 2, message = "Name must be at least 3 characters!")
 	@Column(unique = true)
 	@UniqueUsername(message = "Such username already exists!")
 	private String name;
 
-	
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date doj;
 
 	private char position;
-	
+
 	private char gender;
+
+	private String panNo;
 
 	private String mobNo;
 
@@ -69,6 +69,8 @@ public class User {
 	private String state;
 
 	private String country;
+
+	private int life;
 
 	@ManyToOne
 	@JoinColumn(name = "securityQues_id")
@@ -100,7 +102,6 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Transaction> transactions;
-
 
 	/* getters and setters */
 
@@ -302,6 +303,22 @@ public class User {
 
 	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
+	}
+
+	public String getPanNo() {
+		return panNo;
+	}
+
+	public void setPanNo(String panNo) {
+		this.panNo = panNo;
+	}
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
 	}
 
 

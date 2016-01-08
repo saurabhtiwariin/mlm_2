@@ -1,13 +1,10 @@
 package cz.jiripinkas.jba.entity;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -39,9 +36,6 @@ public class BankDetails {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private User user;
-
-	@OneToMany(mappedBy = "bankDetails")
-	private List<Transaction> transactions;
 
 	public Integer getId() {
 		return id;
@@ -113,14 +107,6 @@ public class BankDetails {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
 	}
 
 }

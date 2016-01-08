@@ -48,10 +48,12 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         final String token = UUID.randomUUID().toString();
         userService.createVerificationTokenForUser(user, token);
 
-        
         final SimpleMailMessage email = constructEmailMessage(event, user, token);
+        
         logger.info("mail has been send");
+        
         mailSender.send(email);
+    
     }
 
     //
@@ -59,17 +61,20 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     private final SimpleMailMessage constructEmailMessage(final OnRegistrationCompleteEvent event, final User user, final String token) {
     	logger.info("Inside constructEmailMessage");
     	final String recipientAddress = user.getEmail();
-        final String subject = "Registration Confirmation";
+        final String subject = "Registration Confirmation \n";
         final String confirmationUrl = event.getAppUrl() + "/register/regitrationConfirm.html?token=" + token;
         logger.info("event.getLocale() : "+event.getLocale());
         final String message = messages.getMessage("message.regSucc", null, event.getLocale());
         logger.info("message : "+ message);
+        
         final SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + " \r\n" + confirmationUrl);
         email.setFrom(env.getProperty("support.email"));
+ 
         logger.info(env.getProperty("support.email"));
+        
         return email;
     }
 

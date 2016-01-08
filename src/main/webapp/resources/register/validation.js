@@ -49,6 +49,11 @@ $(document)
 								return this.optional(element)
 										|| /^[a-z0-9_-]+$/i.test(value);
 							}, "Username can have letters, digit, - and _ only");
+					$.validator
+					.addMethod("isPanNo", function(value, element) {
+						return this.optional(element)
+								|| /^[A-Z0-9]{10}$/i.test(value);
+					}, "PAN CARD Number must be of 10 digit and contains capital letters and numbers, Example:ABCD1212GH ");
 
 					$.validator.addMethod("positivedigitsonly", function(value,
 							element) {
@@ -153,6 +158,22 @@ $(document)
 												}
 											},
 
+											panNo : {
+												required : true,
+												isPanNo : true,
+												remote : {
+													url : "/register/uniquePanNo.html",
+													type : "get",
+													data : {
+														panNo : function() {
+															return $("#panNo")
+																	.val();
+														}
+													}
+
+												}
+											},
+											
 											address : {
 												required : true,
 											},
@@ -194,6 +215,10 @@ $(document)
 											email : {
 												remote : $.validator
 														.format("{0} already exists. Please use a different email.")
+											},
+											panNo : {
+												remote : $.validator
+														.format("{0} already exists. Please use a different PAN CARD NUMBER.")
 											},
 											mobNo : {
 												required : "Please enter a mobile number.",

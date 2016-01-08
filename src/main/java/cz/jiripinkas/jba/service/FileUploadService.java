@@ -32,9 +32,22 @@ public class FileUploadService {
 	@Autowired
 	private CommitService commitService;
 	
+	public void save(String url, int acceptId) {
+		// TODO Auto-generated method stub
+		FileUpload uploadFile = new FileUpload();
+		uploadFile.setUrl(url);
+		// uploadFile.setImage(decodeImage());
+		
+		Accept accept = acceptRepository.findOne(acceptId);
+		uploadFile.setAccept(accept);
+		acceptService.setStatus(accept,2);
+		commitService.setChequeUploadDate(accept.getCommit());
+		fileUploadRepository.save(uploadFile);
+	}
+	
 	public void save(CommonsMultipartFile aFile, Integer acceptId) {
 		// TODO Auto-generated method stub
-
+/*
 		logger.info("inside save **************");
 		logger.info("Filename : " + aFile.getOriginalFilename());
 		logger.info("Data : " + aFile.getBytes());
@@ -43,10 +56,10 @@ public class FileUploadService {
 		logger.info("file size : " + aFile.getStorageDescription());
 		logger.info("file size : " + aFile.getName());
 
-		/*
+		
 		 * new CommonsMultipartFile().transferTo(arg0); BufferedImage
 		 * bufferedImage = ImageIO.read(aFile);
-		 */
+		 
 		// String encodedImageString = encodeImage(aFile.getBytes());
 
 		FileUpload uploadFile = new FileUpload();
@@ -59,7 +72,7 @@ public class FileUploadService {
 		acceptService.setStatus(accept,2);
 		commitService.setChequeUploadDate(accept.getCommit());
 		fileUploadRepository.save(uploadFile);
-	}
+*/	}
 
 	/*
 	 * public FileUpload findByID(Integer id) { // TODO Auto-generated method
@@ -67,7 +80,7 @@ public class FileUploadService {
 	 */
 	public FileUpload findByName(String name) {
 		// TODO Auto-generated method stub
-		return fileUploadRepository.findByFileName(name);
+		return null;/*fileUploadRepository.findByFileName(name);*/
 	}
 
 	public String encodeImage(byte[] imageByteArray) {
@@ -92,13 +105,15 @@ public class FileUploadService {
 
 	public void updateFileUploadTable(FileUpload tmp) {
 		logger.info("inside updateFileUploadTable service");
-
+/*
 		Integer idtmp = tmp.getId();
 		FileUpload fileUpload = fileUploadRepository.findOne(idtmp);
 		fileUpload.setAccept(tmp.getAccept());
 		fileUpload.setFileName(tmp.getFileName());
 		fileUpload.setImage(tmp.getImage());
-		fileUploadRepository.save(fileUpload);
+		fileUploadRepository.save(fileUpload);*/
 
 	}
+
+	
 }

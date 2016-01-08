@@ -1,5 +1,7 @@
 package cz.jiripinkas.jba.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cz.jiripinkas.jba.entity.Accept;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.service.AcceptService;
+import cz.jiripinkas.jba.service.CommitService;
 import cz.jiripinkas.jba.service.UserService;
 
 @Controller
@@ -27,38 +30,54 @@ public class WithdrawlController {
 	private static final Logger logger = Logger
 			.getLogger(WithdrawlController.class);
 
-	
 	@Autowired
 	private AcceptService acceptService;
 
+	@Autowired
+	private UserService userService;
+
+
+	@Autowired
+	private CommitService commitService;
+	
 	@ModelAttribute("accept")
 	private Accept constructAccept() {
 		return new Accept();
 	}
 
 	@RequestMapping("/withdrawl")
-	public String getBankDetails(Model model, HttpSession session) {
-		User user = (User) session.getAttribute("currentUser");
+	public String getBankDetails(Model model, Principal principal) {
+		User user = userService.findOne(principal);
 		model.addAttribute("user", user);
 		return "withdrawl";
 	}
 
 	@RequestMapping(value = "/withdrawl", method = RequestMethod.POST)
-	public String doRegister(@Valid @ModelAttribute("accept") Accept accept,
+	public String doWithdrawl(@Valid @ModelAttribute("accept") Accept accept,Principal principal,
 			HttpSession session, BindingResult result,
 			RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			logger.info("Inside BindingResult withdrawl");
 			return "/withdrawl";
 		}
-		User user = (User) session.getAttribute("currentUser");
+		User user = userService.findOne(principal);
 
 		if (accept.getAmount() == 0 || user.getBalance() < accept.getAmount()) {
 			redirectAttributes.addFlashAttribute("lowBal", true);
 			return "redirect:/user/memberZone.html";
 		}
-		if (accept.getAmount() % 1000 != 0) {
+		if (accept.getAmount() % 500 != 0) {
 			redirectAttributes.addFlashAttribute("invalidAmount", true);
+			return "redirect:/user/memberZone.html";
+		}
+
+		if (commitService.allCommitsShouldBeAccepted(user)) {
+			redirectAttributes.addFlashAttribute("commitNotAcepptedYet", true);
+			return "redirect:/user/memberZone.html";
+		}
+
+		if (acceptService.tenDayCheck(user)) {
+			redirectAttributes.addFlashAttribute("tenDayCheckFailed", true);
 			return "redirect:/user/memberZone.html";
 		}
 

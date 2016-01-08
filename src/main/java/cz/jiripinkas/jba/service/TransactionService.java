@@ -1,5 +1,6 @@
 package cz.jiripinkas.jba.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import cz.jiripinkas.jba.entity.Accept;
+import cz.jiripinkas.jba.entity.Commit;
 import cz.jiripinkas.jba.entity.Transaction;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.repository.StatusRepository;
@@ -31,9 +34,9 @@ public class TransactionService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<Transaction> findByUser(User user) {
+	public List<Transaction> findByUser(User user,String remark) {
 		// TODO Auto-generated method stub
-		List<Transaction> transactions = transactionRepository.findByUser(user);
+		List<Transaction> transactions = transactionRepository.findByUser(user,remark);
 		return transactions;
 	}
 
@@ -44,6 +47,12 @@ public class TransactionService {
 				.getContent();
 	}
 
+	public List<Transaction> getTableData(User user) {
+		// TODO Auto-generated method stub
+		return transactionRepository.findByUser(user);
+	}
+
+	
 	public void updateTransactionTable(Transaction tmp) {
 		// TODO Auto-generated method stub
 		logger.info("inside updateTransactionTable service");
@@ -52,16 +61,55 @@ public class TransactionService {
 		Transaction transaction = transactionRepository.findOne(idtmp);
 
 		transaction.setAmount(tmp.getAmount());
-		transaction.setAfterTransactionAmount(tmp.getAfterTransactionAmount());
+		transaction.setBalAfterTran(tmp.getBalAfterTran());
+		transaction.setBalBeforeTran(tmp.getBalBeforeTran());
 		transaction.setDateTransaction(tmp.getDateTransaction());
 		transaction.setRemark(tmp.getRemark());
-		transaction.setAccept(tmp.getAccept());
-		transaction.setBankDetails(tmp.getBankDetails());
-		transaction.setStatus(tmp.getStatus());
 		transaction.setUser(tmp.getUser());
 		transactionRepository.save(transaction);
 
 	}
+
+	public void entryForCommit(User user, Commit commit, long newBal) {
+		// TODO Auto-generated method stub
+		Transaction transaction = new Transaction();
+		transaction.setAmount(commit.getAmount());
+		transaction.setBalBeforeTran(user.getBalance());
+		transaction.setBalAfterTran(newBal);
+		transaction.setDateTransaction(new Date(System.currentTimeMillis()));
+		transaction.setRemark("commit");
+		transaction.setUser(user);
+		transactionRepository.saveAndFlush(transaction);
+		logger.info("Entry made to transaction table with for user"+user.getName());
+	}
+
+	public void entryForAccept(User user, Accept accept, long newBal) {
+		// TODO Auto-generated method stub
+		Transaction transaction = new Transaction();
+		transaction.setAmount(accept.getAmount());
+		transaction.setBalBeforeTran(user.getBalance());
+		transaction.setBalAfterTran(newBal);
+		transaction.setDateTransaction(new Date(System.currentTimeMillis()));
+		transaction.setRemark("accept");
+		transaction.setUser(user);
+		transactionRepository.saveAndFlush(transaction);
+		logger.info("Entry made to transaction table with for user="+user.getName());
+		
+	}
+
+	public void entryForDirectIncome(User sponser, User commitUser, long bal, long newBal) {
+		// TODO Auto-generated method stub
+		Transaction transaction = new Transaction();
+		transaction.setBalBeforeTran(bal);
+		transaction.setBalAfterTran(newBal);
+		transaction.setDateTransaction(new Date(System.currentTimeMillis()));
+		transaction.setRemark("directIncome by "+commitUser.getName()+" from your "+commitUser.getPosition()+" downline.");
+		transaction.setUser(sponser);
+		transactionRepository.saveAndFlush(transaction);
+		logger.info("Entry made to transaction table with for user="+sponser.getName());
+		
+	}
+
 
 	/*
 	 * public void saveByCommit(Commit commit, User user) { // TODO

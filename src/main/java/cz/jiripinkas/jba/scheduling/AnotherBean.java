@@ -17,5 +17,6 @@ public class AnotherBean {
 	
 	public void updateUserBalanceCronJob() {
 		userService.updateUserBalanceCronJob();
-	}	
+	}
+
 }

@@ -17,6 +17,7 @@ public class ScheduledJob extends QuartzJobBean{
 	protected void executeInternal(JobExecutionContext arg0)
 			throws JobExecutionException {
 		anotherBean.updateUserBalanceCronJob();
+
 	}
 
 	public void setAnotherBean(AnotherBean anotherBean) {

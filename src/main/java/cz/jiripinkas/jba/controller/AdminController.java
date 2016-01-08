@@ -128,7 +128,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/transaction", method = RequestMethod.POST)
-	public String transactionPost(Model model,
+	public String updateTransactionTableAdmin(Model model,
 			@ModelAttribute("transaction") Transaction transaction,
 			BindingResult result, RedirectAttributes redirectAttributes) {
 		logger.info("inside post *******************");

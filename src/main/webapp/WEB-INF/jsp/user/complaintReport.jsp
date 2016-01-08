@@ -16,7 +16,7 @@
 
 	<div>
 		<table class="myGridStyle" cellspacing="0" cellpadding="4"
-			id="ContentPlaceHolder1_GridView1"
+			id="dvData"
 			style="color: #333333; width: 1070px; border-collapse: collapse; margin-left: 20px;">
 			<tr
 				style="color: White; background-color: #3B3737; font-weight: bold;">
@@ -29,9 +29,23 @@
 			</tr>
 		</table>
 	</div>
-	<br /> <input type="submit" name="ctl00$ContentPlaceHolder1$btnimport"
-		value="Import To Excel" id="ContentPlaceHolder1_btnimport"
-		class="btn btn-gray5" /> <input type="hidden"
+	<br /> 			<script type='text/javascript'>
+				//<![CDATA[
+				$(function() {
+					$("#btnExport").click(
+							function(e) {
+								window.open('data:application/vnd.ms-excel,'
+										+ $('#dvData').html());
+								e.preventDefault();
+							});
+				});//]]>
+			</script>
+
+			<div class="form-group">
+				<button id="btnExport"
+					class="btn btn-success btn-lg wow rotateIn animated "
+					data-wow-delay="0.8s">Import To Excel</button>
+			</div> <input type="hidden"
 		name="ctl00$ContentPlaceHolder1$hduid" id="ContentPlaceHolder1_hduid"
 		value="1685" />
 

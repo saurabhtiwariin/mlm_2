@@ -20,6 +20,7 @@
 	<definition name="updatePassword" template="/WEB-INF/jsp/ext/updatePassword.jsp" />
 	<!-- error package -->
 
+	<definition name="userRegister" template="/WEB-INF/jsp/userRegister.jsp"/>
 
 	<!-- <definition name="forgetPassword" template="/WEB-INF/jsp/ext/forgetPassword.jsp" 
 		/> -->
@@ -29,14 +30,10 @@
 			value="/WEB-INF/jsp/ext/forgetPassword.jsp" />
 		<put-attribute name="current" value="forgetPassword" />
 	</definition>
-	
-<!-- 	<definition name="updatePassword" extends="common">
-		<put-attribute name="title" value="Update Password" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/ext/updatePassword.jsp" />
-		<put-attribute name="current" value="updatePassword" />
-	</definition>
- -->
+
+	<!-- <definition name="updatePassword" extends="common"> <put-attribute 
+		name="title" value="Update Password" /> <put-attribute name="body" value="/WEB-INF/jsp/ext/updatePassword.jsp" 
+		/> <put-attribute name="current" value="updatePassword" /> </definition> -->
 	<!-- admin pannel -->
 
 	<definition name="adminDashboard" extends="commonAdmin">
@@ -108,46 +105,45 @@
 	<!-- before login -->
 
 	<definition name="index" extends="common">
-		<put-attribute name="title" value="MLM Help" />
+		<put-attribute name="title" value="MMMINR" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ext/index.jsp" />
-		<put-attribute name="current" value="index" />
 	</definition>
 
-
-	<definition name="feedback" extends="common">
-		<put-attribute name="title" value="Feedback" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ext/feedback.jsp" />
-		<put-attribute name="current" value="feedback" />
+	<definition name="ss" extends="common">
+		<put-attribute name="title" value="Success Stories" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/ss.jsp" />
 	</definition>
 
-	<definition name="businessPlan" extends="common">
+	<definition name="about" extends="common">
+		<put-attribute name="title" value="About Us" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/about.jsp" />
+	</definition>
+
+	<definition name="program" extends="common">
 		<put-attribute name="title" value="Business Plan" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ext/businessPlan.jsp" />
-		<put-attribute name="current" value="businessPlan" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/program.jsp" />
 	</definition>
 
 	<definition name="contactUs" extends="common">
 		<put-attribute name="title" value="Contact Us" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ext/contactUs.jsp" />
-		<put-attribute name="current" value="contactUs" />
 	</definition>
 
 
 	<definition name="faq" extends="common">
 		<put-attribute name="title" value="FAQ" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ext/faq.jsp" />
-		<put-attribute name="current" value="faq" />
 	</definition>
 
 	<!-- before login complete -->
 
 	<!-- register page -->
-	<definition name="userRegister" extends="common">
+	<!-- <definition name="userRegister" extends="common">
 		<put-attribute name="title" value="User Registration" />
 		<put-attribute name="body" value="/WEB-INF/jsp/userRegister.jsp" />
 		<put-attribute name="current" value="userRegister" />
 	</definition>
-	<!-- login and register page COMPLETE -->
+	 --><!-- login and register page COMPLETE -->
 
 
 	<!-- User pannel -->
@@ -227,13 +223,6 @@
 		<put-attribute name="current" value="directMember" />
 	</definition>
 
-	<definition name="ewalletReport" extends="commonUser">
-		<put-attribute name="title" value="Ewallet Report" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/user/ewalletReport.jsp" />
-		<put-attribute name="current" value="ewalletReport" />
-	</definition>
-
 	<definition name="ganealogy" extends="commonUser">
 		<put-attribute name="title" value="Ganealogy" />
 		<put-attribute name="body" value="/WEB-INF/jsp/user/ganealogy.jsp" />
@@ -260,6 +249,12 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/user/withdrawlReport.jsp" />
 		<put-attribute name="current" value="withdrawlReport" />
+	</definition>
+	<definition name="transactionReport" extends="commonUser">
+		<put-attribute name="title" value="Transaction Report" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/user/transactionReport.jsp" />
+		<put-attribute name="current" value="transactionReport" />
 	</definition>
 	<definition name="myDownline" extends="commonUser">
 		<put-attribute name="title" value="My Downline" />

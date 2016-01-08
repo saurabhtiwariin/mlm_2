@@ -3,7 +3,6 @@ package cz.jiripinkas.jba.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import cz.jiripinkas.jba.service.BlogService;
 import cz.jiripinkas.jba.service.UserService;
 
 @Controller
@@ -12,8 +11,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private BlogService blogService;
 	
 	
 	/*@ModelAttribute("blog")

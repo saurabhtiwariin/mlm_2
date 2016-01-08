@@ -25,9 +25,6 @@ public class Status {
 	@OneToMany(mappedBy = "status")
 	private List<Complaint> complaints;
 
-	@OneToMany(mappedBy = "status")
-	private List<Transaction> transactions;
-
 	public Integer getId() {
 		return id;
 	}
@@ -66,14 +63,6 @@ public class Status {
 
 	public void setComplaints(List<Complaint> complaints) {
 		this.complaints = complaints;
-	}
-
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
 	}
 
 

@@ -17,6 +17,10 @@
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/user**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/user/*" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/register/*" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/register**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/register/*" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/register**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/user**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/user/*" access="hasRole('ROLE_USER')" />
 		

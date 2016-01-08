@@ -3,69 +3,84 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-<script type="text/javascript">
-	$(document).ready(function() {
+<!--SERVICES SECTION-->
+<section class="for-full-back color-bg-one" id="services-sec">
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-8 col-md-offset-2 ">
+				<h1>
+					<i class="fa fa-rocket faa-pulse animated  "></i>CHANGE PASSWORD
+				</h1>
 
-		$("#secQuesDiv").load('/user/getSecurityQuestion.html');
+			</div>
 
-		$("#secAnsDiv").focusout(function(event) {
-		}, function(event) {
-			var value = $("#secQuesDiv").val();
-			$("#errorDiv").load('/user/checkPassword.html', {
-				"pass" : value
-			});
-		});
+		</div>
+	</div>
+</section>
 
-	});
-</script>
+<!-- SOCIAL STATS SECTION-->
+<section>
+	<div class="container">
+		<div class="row pad-top-botm">
+			<div class="row text-center">
+				<div class="col-md-8 col-md-offset-2 ">
+					<h4>
+						<strong>Please enter following fields. </strong>
+					</h4>
+				</div>
+			</div>
+			<div
+				class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
+				<form action="/user/editPassword.html" method="post"
+					class=".resetPasswordForm">
+					<c:if test="${success eq true}">
+						<div class="alert alert-success">Update successfull!</div>
+					</c:if>	
 
-<div class="myClass">
+					<div class="form-group">
 
-	<table width="50%">
-		<!-- 		<tr>
-			<td align="right"><b>Security Question:</b></td>
-			<td id="secQuesDiv" ></td>
-		</tr>
-		<tr>
-			<td align="right"><b>Enter Security Answer:</b></td>
-			<td><div id="secAnsDiv">
-					<input type="text" name="secAns" id="secAns"
-						style="width: 92%;" />
-				</div></td>
-			<td><div id="errorDiv"></div></td>
-		</tr>
- -->
+						<input type="text" id="password" name="password"
+							class="form-control wow rotateIn animated" data-wow-delay="0.5s"
+							required="required" placeholder="New Password" />
+					</div>
+					<div class="form-group">
 
-		<form action="/user/editPassword.html" method="post"
-			class=".resetPasswordForm">
-			<c:if test="${success eq true}">
-				<div class="alert alert-success">Update successfull!</div>
-			</c:if>
-			<tr>
-				<td align="right"><b>New Password :</b></td>
-				<td><input type="text" id="password" name="password"
-					style="width: 92%;" /></td>
-			</tr>
-			<tr>
-				<td align="right"><b>Confirm Password :</b></td>
-				<td><input type="text" name="password_again"
-					id="password_again" style="width: 92%;" /></td>
-			</tr>
-			<tr>
-				<td align="right"><b></b></td>
-				<td><input type="submit" value="Change Password"
-					class="btn btn-gray5" /></td>
-			</tr>
-		</form>
-	</table>
-	<br />
+						<input type="text" name="password_again" id="password_again"
+							class="form-control wow rotateIn animated" data-wow-delay="0.5s"
+							required="required" placeholder="Confirm Password" />
+					</div>
+					<div class="form-group">
+						<button type="submit" id="submit" name="submit"
+							class="btn btn-success btn-lg wow rotateIn animated "
+							data-wow-delay="0.8s">CHANGE PASSWORD</button>
+					</div>
+					<div class="form-group">
+						<p>
+							<br> <br> <br>
+						</p>
+					</div>
+					<div class="form-group">
+						<p></p>
+					</div>
 
-</div>
+
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+</section>
+
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
 
 
 <script type="text/javascript">
 	$(document).ready(
 			function() {
+
 				$(".resetPasswordForm").validate(
 						{
 							rules : {
@@ -88,7 +103,13 @@
 										'has-error').addClass('has-success');
 							},
 							messages : {
-							
+								password : {
+									minlength : "Minimum length of password is 5."
+								},
+								password_again : {
+									minlength : "Minimum length of password is 5.",
+									equalTo : "Password mismatch.. retry"
+								}
 							}
 						});
 			});

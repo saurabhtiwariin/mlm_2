@@ -11,8 +11,6 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
 import org.hibernate.annotations.Type;
-//
-//import org.hibernate.type.;
 
 @Entity
 @SelectBeforeUpdate(value=true)
@@ -22,12 +20,7 @@ public class FileUpload {
 	@GeneratedValue
 	private Integer id;
 
-	private String fileName;
-
-	@Lob
-	@Type(type = "org.hibernate.type.BinaryType")
-	@Column(length = Integer.MAX_VALUE)
-	private byte[] image;
+	private String url;
 
 	@OneToOne
 	@JoinColumn(name = "accept_id")
@@ -41,28 +34,21 @@ public class FileUpload {
 		this.id = id;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public byte[] getImage() {
-		return image;
-	}
-
-	public void setImage(byte[] image) {
-		this.image = image;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public Accept getAccept() {
 		return accept;
 	}
 
-	public void setAccept(Accept param) {
-		this.accept = param;
+	public void setAccept(Accept accept) {
+		this.accept = accept;
 	}
+
 
 }

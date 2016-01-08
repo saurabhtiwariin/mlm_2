@@ -18,12 +18,14 @@ import org.springframework.stereotype.Service;
 import cz.jiripinkas.jba.entity.Commit;
 import cz.jiripinkas.jba.entity.PasswordResetToken;
 import cz.jiripinkas.jba.entity.Role;
+import cz.jiripinkas.jba.entity.Transaction;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.entity.VerificationToken;
 import cz.jiripinkas.jba.repository.CommitRepository;
 import cz.jiripinkas.jba.repository.PasswordResetTokenRepository;
 import cz.jiripinkas.jba.repository.RoleRepository;
 import cz.jiripinkas.jba.repository.SecurityQuestionRepository;
+import cz.jiripinkas.jba.repository.TransactionRepository;
 import cz.jiripinkas.jba.repository.UserRepository;
 import cz.jiripinkas.jba.repository.VerificationTokenRepository;
 
@@ -40,6 +42,9 @@ public class UserService {
 	private CommitService commitService;
 
 	@Autowired
+	private TransactionService transactionService;
+
+	@Autowired
 	private CommitRepository commitRepository;
 
 	@Autowired
@@ -54,6 +59,9 @@ public class UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 
+	@Autowired
+	private TransactionRepository transactionRepository;
+
 	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	public List<User> findAll() {
@@ -67,17 +75,15 @@ public class UserService {
 
 	public void createVerificationTokenForUser(final User user,
 			final String token) {
-		final VerificationToken myToken = new VerificationToken(token, user);
-		tokenRepository.save(myToken);
+		tokenRepository.save(new VerificationToken(token, user));
 	}
 
-	public void createOTPForUser(final User usr,
-			final String otp) {
+	public void createOTPForUser(final User usr, final String otp) {
 		User user = findOne(usr.getId());
 		user.setOtp(otp);
 		userRepository.save(user);
 	}
-	
+
 	public User findOne(int id) {
 		// TODO Auto-generated method stub
 		return userRepository.findOne(id);
@@ -94,9 +100,10 @@ public class UserService {
 	 * 10, Direction.DESC, "publishedDate")); blog.setItems(items); }
 	 * user.setBlogs(blogs); return user; }
 	 */
-	public void save(User user) {
+	public void save(User user, String regFor) {
 		// TODO Auto-generated method stub
 		user.setEnabled(false);
+		user.setLife(0);
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		user.setPassword(encoder.encode(user.getPassword()));
 
@@ -108,28 +115,22 @@ public class UserService {
 
 		user.setDoj(new Date(System.currentTimeMillis()));
 
-		User sponser = user.getSponser();
-		if (sponser != null) {
-			giveReferralBonusAndPersist(sponser);
-		}
-
 		userRepository.save(user);
 	}
 
-	private void giveReferralBonusAndPersist(User sponser) {
-		// TODO Auto-generated method stub
-		long var = 0;
-		User usr = findOne(sponser.getId());
-		List<Commit> commits = commitRepository.findByUser(sponser);
-		for (Commit commit : commits) {
-			var += commit.getAmount();
+	public void giveReferralBonusAndPersist(User sponser, User commitUser,
+			long l) {
+
+		long bonus = l / 20;
+
+		long bal = sponser.getBalance();
+		long newBal = bal + bonus;
+
+		sponser.setBalance(newBal);
+		if (userRepository.save(sponser) != null) {
+			transactionService.entryForDirectIncome(commitUser, sponser, bal,
+					newBal);
 		}
-
-		long bal = usr.getBalance();
-		long newBal = bal + (var / 10);
-
-		usr.setBalance(newBal);
-		userRepository.save(usr);
 
 	}
 
@@ -248,8 +249,9 @@ public class UserService {
 
 	public void updateUserBalanceCronJob() {
 		// TODO Auto-generated method stub
-		List<User> users = userRepository.findAll();
+		List<User> users = userRepository.findByEnabled(true);
 		for (User user : users) {
+
 			long var = 0;
 			List<Commit> commits = commitRepository.findByUser(user);
 			for (Commit commit : commits) {
@@ -259,16 +261,47 @@ public class UserService {
 			long bal = user.getBalance();
 			long newBal = bal + (var / 10);
 			user.setBalance(newBal);
-			userRepository.save(user);
+			user.setLife(user.getLife() + 1);
+			if (user.getLife() == 20) {
+				Role roleAdmin = roleRepository.findOne(2);
+				if (user.getRoles().contains(roleAdmin)) {
+					var=0;
+				}else{
+					user.setEnabled(false);
+				}
+			}
+			if (var != 0) {
+
+				if (userRepository.save(user) != null) {
+					Transaction transaction = new Transaction();
+					transaction.setBalBeforeTran(bal);
+					transaction.setBalAfterTran(newBal);
+					transaction.setDateTransaction(new Date(System
+							.currentTimeMillis()));
+					transaction.setRemark("dailyIncome");
+					transaction.setUser(user);
+					transactionRepository.saveAndFlush(transaction);
+				}
+			}
 		}
 	}
 
 	public void updateBalance(User user, long amount) {
 		// TODO Auto-generated method stub
 		logger.info("Inside updateBalance()");
-		user.setBalance(user.getBalance()-amount) ;
+		user.setBalance(user.getBalance() - amount);
 		userRepository.save(user);
 		logger.info("Inside updateBalance()");
+	}
+
+	public User findOne(Principal principal) {
+		// TODO Auto-generated method stub
+		return findOne(principal.getName());
+	}
+
+	public User findUserByPanNO(String panNo) {
+		// TODO Auto-generated method stub
+		return userRepository.findByPanNo(panNo);
 	}
 
 }

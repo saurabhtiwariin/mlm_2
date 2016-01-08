@@ -61,14 +61,19 @@ public class CommitmentController {
 			return "/commitment";
 		}
 		
-		if(commit.getAmount()==0 || commit.getAmount() % 5000 != 0){
+		if(commit.getAmount()==0 || commit.getAmount() % 500 != 0){
 			redirectAttributes.addFlashAttribute("invalidCommitAmount", true);	
 			return "redirect:/user/memberZone.html";	
 		}
 		
-		commitService.save(commit,principal.getName());	
-		redirectAttributes.addFlashAttribute("success", true);
+		if (commitService.save(commit,principal.getName())) {
+			redirectAttributes.addFlashAttribute("success", true);
+			return "redirect:/user/memberZone.html";			
+		}
+		redirectAttributes.addFlashAttribute("success", false);
 		return "redirect:/user/memberZone.html";
+
+
 	}
 
 	

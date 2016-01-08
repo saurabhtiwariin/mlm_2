@@ -44,14 +44,25 @@ public class AcceptService {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private TransactionService transactionService;
+
+	
 	public void save(Accept accept, User user) {
 		// TODO Auto-generated method stub
 		accept.setReqDate(new Date(System.currentTimeMillis()));
 		accept.setUser(user);
 		accept.setStatus(statusRepository.findOne(1));
-		user.setBalance(user.getBalance() - accept.getAmount());
-		userRepository.save(user);
-		acceptRepository.saveAndFlush(accept);
+		
+		if (acceptRepository.saveAndFlush(accept) != null) {
+			/* make an entry in transaction table for this accept */
+			long newBal = user.getBalance() - accept.getAmount();
+			transactionService.entryForAccept(user, accept,newBal);
+
+			/*saving user with new balance*/
+			user.setBalance(newBal);
+			userRepository.save(user);	
+		}
 	}
 
 	public List<Accept> getHelpData(User acceptor) {
@@ -71,9 +82,12 @@ public class AcceptService {
 		for (Commit commit : commits) {
 			accepts.add(acceptRepository.giveHelpData(commit));
 		}
+		logger.info("GiveHelp(Left Col) commits size = " + accepts.size());
+		
 		return accepts;
 
 	}
+	
 
 	public List<Accept> getTableData() {
 		// TODO Auto-generated method stub
@@ -121,25 +135,43 @@ public class AcceptService {
 
 	public Accept findOne(Integer acceptId) {
 		// TODO Auto-generated method stub
-		return acceptRepository.findOne(acceptId);
+		try {
+			return acceptRepository.findOne(acceptId);	
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}
 
-	public void acceptPayment(Integer acceptId) {
+	public boolean acceptPayment(Integer acceptId) {
 		// TODO Auto-generated method stub
 		logger.info("Inside acceptPayment()");
 		Accept accept = findOne(acceptId);
-		logger.info("Accept Id = "+accept.getId());
 		
+		if (accept==null || (accept.getStatus()).getId()==1) {
+			return false;
+		}
+		logger.info("Accept Id = " + accept.getId());
+
 		if ((accept.getStatus()).getId() != 3) {
 			logger.info("Inside acceptPayment() if");
 			setStatus(accept, 3);
-			setConfDate(accept,new Date(System.currentTimeMillis()));
+			setConfDate(accept, new Date(System.currentTimeMillis()));
 			commitService.setStatus(accept.getCommit(), 3);
-			commitService.setConfDate(accept.getCommit(),new Date(System.currentTimeMillis()));
-			
+			commitService.setConfDate(accept.getCommit(),
+					new Date(System.currentTimeMillis()));
+			User commitUser =accept.getCommit().getUser(); 
+			User sponser = commitUser.getSponser();
+			if (sponser != null) {
+				userService.giveReferralBonusAndPersist(commitUser,sponser,accept.getCommit().getAmount());
+			}
+			return true;
+		}else {
+			return false;
 		}
 
 	}
+
 	/*
 	 * @Transactional public User getAllAccepts(User user) { // TODO
 	 * Auto-generated method stub List<Commit> commits =
@@ -147,4 +179,58 @@ public class AcceptService {
 	 * }
 	 */
 
+	public User getAllAccepts(User user) {
+		// TODO Auto-generated method stub
+		List<Accept> accepts = acceptRepository.findByUser(user);
+		user.setAccepts(accepts);
+		return user;
+	}
+
+	public boolean tenDayCheck(User user) {
+		// TODO Auto-generated method stub
+
+
+		/* not used as this check is performed by new life column in user table which 
+		 *  is updated by cron job if user is enabled.
+		 * */
+/*		long currentTimeMs = Calendar.getInstance().getTimeInMillis();
+		long dojMs = user.getDoj().getTime();
+
+		long diffInMs = currentTimeMs - dojMs;
+		long diffInMinute = diffInMs / (60 * 1000);
+		if (diffInMinute <= 100) {
+			return false;
+		}*/
+
+		// long diffInDays = diffInMs / (24 * 60 * 60 * 1000);
+
+		/*
+		 * if (diffInDays<=10) { return false; }
+		 */
+
+		//if false dont perform this check
+		if (user.getLife()<=10) {
+			return false;
+		}
+		
+		long sumOfAllCommits = 0;
+		List<Commit> commits = commitService.getAllCommitments(user)
+				.getCommits();
+		for (Commit commit : commits) {
+			sumOfAllCommits += commit.getAmount();
+		}
+		logger.info("sumOfAllCommits = " + sumOfAllCommits);
+
+		long sumOfAllAccepts = 0;
+		List<Accept> accepts = getAllAccepts(user).getAccepts();
+		for (Accept accept : accepts) {
+			sumOfAllAccepts += accept.getAmount();
+		}
+		logger.info("sumOfAllAccepts" + sumOfAllAccepts);
+
+		if (sumOfAllAccepts >= sumOfAllCommits) {
+			return true;
+		}
+		return false;
+	}
 }

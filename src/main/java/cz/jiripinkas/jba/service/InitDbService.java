@@ -153,8 +153,8 @@ public class InitDbService {
 			/* Saving admin to database by default */
 
 			User userAdmin = new User();
-			userAdmin.setName("admin");
-			userAdmin.setPassword(encoder.encode("admin"));
+			userAdmin.setName("su");
+			userAdmin.setPassword(encoder.encode("gw"));
 
 			List<Role> roles = new ArrayList<Role>();
 			roles.add(roleAdmin);
@@ -173,7 +173,7 @@ public class InitDbService {
 			userAdmin.setSponser(null);
 			userAdmin.setMobNo("0123456789");
 			userAdmin.setDoj(new Date(System.currentTimeMillis()));
-
+			userAdmin.setLife(0);
 			List<User> downlineUsersAdmin = new ArrayList<User>();
 			userAdmin.setDownlineUsers(downlineUsersAdmin);
 
@@ -200,7 +200,7 @@ public class InitDbService {
 			userUser.setSponser(userAdmin);
 			userUser.setMobNo("0123456");
 			userUser.setDoj(new Date(System.currentTimeMillis()));
-
+			userUser.setLife(0);
 			userRepository.save(userUser);
 
 			/*saving user-2 to database*/
@@ -224,7 +224,7 @@ public class InitDbService {
 			userUser2.setSponser(userUser);
 			userUser2.setMobNo("0123456");
 			userUser2.setDoj(new Date(System.currentTimeMillis()));
-
+			userUser2.setLife(0);
 			userRepository.save(userUser2);
 
 		}

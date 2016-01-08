@@ -3,32 +3,106 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-
-            <div class="myClass">
-                <script type="text/javascript">
-//<![CDATA[
-Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'form1', [], [], [], 90, 'ctl00');
-//]]>
-</script>
-
-                
-
-<br />
-    <div>
-	<table class="myGridStyle" cellspacing="0" cellpadding="4" id="ContentPlaceHolder1_GridView1" style="color:#333333;width:1070px;border-collapse:collapse;margin-left:20px;font-family:Verdana">
-		<tr style="color:White;background-color:#3B3737;border-style:Inset;font-weight:bold;">
-			<th scope="col">Amount</th><th scope="col">PaidAmount</th><th scope="col">Date</th><th scope="col">Withdrawl No</th>
-		</tr><tr align="center" style="background-color:#E3EAEB;border-style:Solid;">
-			<td>500</td><td>0</td><td>11/1/2015 11:01:16 AM</td><td>Z19DECF6</td>
-		</tr>
-	</table>
-</div>
-   
-    <br />
-    <input type="submit" name="ctl00$ContentPlaceHolder1$btnimport" value="Import To Excel" id="ContentPlaceHolder1_btnimport" class="btn btn-gray5" />
-        
-         <input type="hidden" name="ctl00$ContentPlaceHolder1$hduid" id="ContentPlaceHolder1_hduid" value="1685" />
-
+  <style type='text/css'>
+ 
+table {
+    border: 1px solid black;
+    width:100%;
+}
+th {
+    border: 1px solid black;
+    padding: 5px;
+    background-color:grey;
+    color: white;
+}
+td {
+background-color:white;
+    color: black;
+    border: 1px solid black;
+    padding: 5px;
+}
+input {
+    font-size: 12pt;
+    font-family: Calibri;
+}
+  </style>
+  
 
 
-            </div>
+<!--SERVICES SECTION-->
+<section class="for-full-back color-bg-one">
+	<div class="container">
+		<div class="row text-center">
+			<div class="col-md-8 col-md-offset-2 ">
+				<h1>
+					<i class="fa fa-rocket faa-pulse animated  "></i>WITHDRAWAL REPORT
+				</h1>
+
+			</div>
+
+		</div>
+	</div>
+</section>
+
+<!-- SOCIAL STATS SECTION-->
+<section>
+	<div class="container">
+		<div class="row pad-top-botm">
+
+
+
+			<div class="form-group" id="dvData">
+
+				<table>
+					<tr>
+						<th>Withdrawal Id</th>
+						<th>Amount</th>
+						<th>Request Date</th>
+						<th>Status</th>
+						<th>Confirm Date</th>
+
+					</tr>
+					<c:forEach items="${user.accepts}" var="accept">
+						<tr>
+							<td><c:out value="${accept.id}" /></td>
+							<td><c:out value="${accept.amount}" /></td>
+							<td><c:out value="${accept.reqDate}" /></td>
+							<td><c:out value="${accept.status.name}" /></td>
+							<td><c:out value="${accept.confDate}" /></td>
+						</tr>
+					</c:forEach>
+
+				</table>
+			</div>
+			<script type='text/javascript'>
+				//<![CDATA[
+				$(function() {
+					$("#btnExport").click(
+							function(e) {
+								window.open('data:application/vnd.ms-excel,'
+										+ $('#dvData').html());
+								e.preventDefault();
+							});
+				});//]]>
+			</script>
+
+			<div class="form-group">
+				<button id="btnExport"
+					class="btn btn-success btn-lg wow rotateIn animated "
+					data-wow-delay="0.8s">Import To Excel</button>
+			</div>			<div class="form-group">
+				<p>
+					<br> <br> <br>
+				</p>
+			</div>
+			<div class="form-group">
+				<p>
+					<br> <br> <br>
+				</p>
+			</div>
+
+		</div>
+
+	</div>
+</section>
+
