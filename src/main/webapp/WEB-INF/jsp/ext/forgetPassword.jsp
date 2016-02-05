@@ -8,6 +8,8 @@
 	<label class="col-sm-1"></label> <span class="col-sm-5"></span>
 </div>
 
+
+
 <a class="btn btn-default" href="<c:url value="index.html" />"><spring:message
 		code="label.form.loginLink"></spring:message></a>
 
@@ -27,7 +29,7 @@
 		<div class="row pad-top-botm">
 			<div
 				class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
-				<form>
+				<form onsubmit='alert("A password reset email has been send your mailbox. If you did not recieve any mail that means you are not registered with us.")'>
 				<div class="form-group"><br></div>
 					<div class="form-group"><br></div>
 					<div class="form-group">
@@ -48,6 +50,7 @@
 					<div class="form-group">
 						<a href="/index.html" class="btn btn-success btn-block btn-lg">SIGN
 							IN</a>
+	<br>
 					</div>
 
 				</form>
@@ -63,8 +66,7 @@
 <script type="text/javascript">
 	function resetPass() {
 		var email = $("#email").val();
-		$
-				.post("<c:url value="/resetPassword.html"></c:url>", {
+		$.post("<c:url value="/resetPassword.html"></c:url>", {
 					email : email
 				}, function(data) {
 					window.location.href = "<c:url value="/logout"></c:url>";

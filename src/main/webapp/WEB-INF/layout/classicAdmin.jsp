@@ -15,11 +15,20 @@
 
 <title><tiles:getAsString name="title" /></title>
 
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous">
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+
+<script type="text/javascript"
+	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 
 <link href="/resources/dist/css/dashboard.css" rel="stylesheet">
 
@@ -66,32 +75,39 @@
 				</ul>
 				<ul class="nav nav-sidebar">
 					<li class="${current == 'user' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/user.html" />">User</a></li>
+						href="<spring:url value="/admin/user.html?page=0" />">User</a></li>
 					<li class="${current == 'accept' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/accept.html" />">Accept</a></li>
+						href="<spring:url value="/admin/accept.html?page=0" />">Accept</a></li>
 					<li class="${current == 'commit' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/commit.html" />">Commit</a></li>
+						href="<spring:url value="/admin/commit.html?page=0" />">Commit</a></li>
 					<li class="${current == 'bankDetails' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/bankDetails.html" />">Bank
+						href="<spring:url value="/admin/bankDetails.html?page=0" />">Bank
 							Details</a></li>
 					<li class="${current == 'complaint' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/complaint.html" />">Complaint</a></li>
+						href="<spring:url value="/admin/complaint.html?page=0" />">Complaint</a></li>
 					<li class="${current == 'fileUpload' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/fileUpload.html" />">File
+						href="<spring:url value="/admin/fileUpload.html?page=0" />">File
 							Upload</a></li>
 					<li class="${current == 'role' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/role.html" />">Role</a></li>
+						href="<spring:url value="/admin/role.html?page=0" />">Role</a></li>
 					<li class="${current == 'securityQuestion' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/securityQuestion.html" />">SecurityQuestion</a></li>
+						href="<spring:url value="/admin/securityQuestion.html?page=0" />">SecurityQuestion</a></li>
 					<li class="${current == 'status' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/status.html" />">Status</a></li>
+						href="<spring:url value="/admin/status.html?page=0" />">Status</a></li>
 					<li class="${current == 'transaction' ? 'active' : ''}"><a
-						href="<spring:url value="/admin/transaction.html" />">Transaction</a></li>
-
+						href="<spring:url value="/admin/transaction.html?page=0" />">Transaction</a></li>
+					<li class="${current == 'passwordResetToken' ? 'active' : ''}"><a
+						href="<spring:url value="/admin/passwordResetToken.html?page=0" />">Password Reset Token</a></li>
+					<li class="${current == 'verificationToken' ? 'active' : ''}"><a
+						href="<spring:url value="/admin/verificationToken.html?page=0" />">Verification Token</a></li>
+					<li class="${current == 'otp' ? 'active' : ''}"><a
+						href="<spring:url value="/admin/otp.html?page=0" />">OTP</a></li>
+				<%-- 	<li class="${current == 'appUserRole' ? 'active' : ''}"><a
+						href="<spring:url value="/admin/appUserRole.html?page=0" />">App User Role</a></li>
+ --%>
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h1 class="page-header">Dashboard</h1>
 
 				<c:if test="${acceptTableUpdated eq true}">
 					<div class="alert alert-success">Accept table Updated !</div>
@@ -135,14 +151,6 @@
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 
- 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script type="text/javascript"
-		src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-		crossorigin="anonymous"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/holder/2.9.0/holder.min.js"></script>
 

@@ -3,6 +3,7 @@ package cz.jiripinkas.jba.controller;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -117,7 +118,7 @@ public class PasswordResetController {
 	@ResponseBody
 	public String resetPassword(
 	  HttpServletRequest request, @RequestParam("email") String userEmail) {
-	     logger.info("In resetPassword");
+	     logger.info("In resetPassword , email ="+userEmail);
 	    User user = userService.findUserByEmail(userEmail);
 	    if (user == null) {
 	        throw new UserNotFoundException();
@@ -166,7 +167,7 @@ public class PasswordResetController {
 	        return "redirect:/index.html?lang=" + locale.getLanguage();
 	    }
 	 
-	    Calendar cal = Calendar.getInstance();
+	    Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 	    if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
 	    	model.addAttribute("message", messages.getMessage("auth.message.expired", null, locale));
 	        return "redirect:/index.html?lang=" + locale.getLanguage();

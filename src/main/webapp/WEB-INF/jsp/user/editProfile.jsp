@@ -3,7 +3,6 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-
 <!--ABOUT SECTION-->
 <section class="for-full-back color-bg-one" id="about-sec">
 	<div class="container">
@@ -66,13 +65,13 @@
 							value="<c:out value="${user.doj}"></c:out>" readonly="readonly"
 							style="width: 92%;" />
 					</div>
-				</div>
+				</div><!-- 
 				<div class="col-md-5 col-sm-3 col-xs-6 col-md-offset-1">
 					<div class="team-member">
 						<strong style="color: white; font-size: 20px;">Upload
 							Profile Picture :</strong> <input type="file" value="" style="width: 92%;" />
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="col-md-12 ">
 				<div class="col-md-5 col-sm-3 col-xs-6 col-md-offset-1">

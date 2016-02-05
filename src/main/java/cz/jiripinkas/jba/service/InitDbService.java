@@ -1,8 +1,9 @@
 package cz.jiripinkas.jba.service;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -64,6 +65,9 @@ public class InitDbService {
 			/* Helper table value setting */
 
 			/* Initializing Status table */
+			Status z = new Status();
+			z.setName("SAVED");
+			statusRepository.save(z);
 			
 			Status k = new Status();
 			k.setName("AWAITING_SUBMISSION");
@@ -153,8 +157,8 @@ public class InitDbService {
 			/* Saving admin to database by default */
 
 			User userAdmin = new User();
-			userAdmin.setName("su");
-			userAdmin.setPassword(encoder.encode("gw"));
+			userAdmin.setName("1@su@2");
+			userAdmin.setPassword(encoder.encode("1@jashan@2"));
 
 			List<Role> roles = new ArrayList<Role>();
 			roles.add(roleAdmin);
@@ -172,7 +176,7 @@ public class InitDbService {
 			userAdmin.setOtp("0000");
 			userAdmin.setSponser(null);
 			userAdmin.setMobNo("0123456789");
-			userAdmin.setDoj(new Date(System.currentTimeMillis()));
+			userAdmin.setDoj(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
 			userAdmin.setLife(0);
 			List<User> downlineUsersAdmin = new ArrayList<User>();
 			userAdmin.setDownlineUsers(downlineUsersAdmin);
@@ -199,7 +203,7 @@ public class InitDbService {
 			userUser.setOtp("0000");
 			userUser.setSponser(userAdmin);
 			userUser.setMobNo("0123456");
-			userUser.setDoj(new Date(System.currentTimeMillis()));
+			userUser.setDoj(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
 			userUser.setLife(0);
 			userRepository.save(userUser);
 
@@ -223,7 +227,7 @@ public class InitDbService {
 			userUser2.setOtp("0000");
 			userUser2.setSponser(userUser);
 			userUser2.setMobNo("0123456");
-			userUser2.setDoj(new Date(System.currentTimeMillis()));
+			userUser2.setDoj(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
 			userUser2.setLife(0);
 			userRepository.save(userUser2);
 

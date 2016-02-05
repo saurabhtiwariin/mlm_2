@@ -1,4 +1,4 @@
-﻿
+
 /*=============================================================
     Authour URI: www.binarytheme.com
     License: Commons Attribution 3.0
@@ -75,6 +75,7 @@ h4 {
     padding-top:10px;
     line-height:40px;
     padding-bottom:20px;
+    
 }
 
 p {
@@ -392,7 +393,8 @@ font-size: 30px;
 ==================================================*/
 
 .color-bg-one {
-    background-color:rgba(0, 122, 255, 1)!important;
+     background-color:rgba(0, 122, 255, 1)!important; 
+/* background-color:#3b5998; */
     color:#fff;
 }
 .color-white {
@@ -417,24 +419,3 @@ font-size: 30px;
     padding:20px 50px 20px 50px;
     text-align:right;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

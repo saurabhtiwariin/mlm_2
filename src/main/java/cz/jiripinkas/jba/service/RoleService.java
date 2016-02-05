@@ -22,11 +22,11 @@ public class RoleService {
 	@Autowired
 	private RoleRepository roleRepository;
 
-	public List<Role> getTableData() {
+	public List<Role> getTableData(int page) {
 		// TODO Auto-generated method stub
 		logger.info("inside getTableData service");
 		return roleRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 	}
 
 	public void updateRoleTable(Role tmp) {
@@ -38,6 +38,11 @@ public class RoleService {
 		role.setName(tmp.getName());
 
 		roleRepository.save(role);
+	}
+
+	public List<Role> findAll() {
+		// TODO Auto-generated method stub
+		return roleRepository.findAll();
 	}
 
 }

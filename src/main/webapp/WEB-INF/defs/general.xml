@@ -20,7 +20,7 @@
 	<definition name="updatePassword" template="/WEB-INF/jsp/ext/updatePassword.jsp" />
 	<!-- error package -->
 
-	<definition name="userRegister" template="/WEB-INF/jsp/userRegister.jsp"/>
+	<definition name="userRegister" template="/WEB-INF/jsp/userRegister.jsp" />
 
 	<!-- <definition name="forgetPassword" template="/WEB-INF/jsp/ext/forgetPassword.jsp" 
 		/> -->
@@ -36,6 +36,31 @@
 		/> <put-attribute name="current" value="updatePassword" /> </definition> -->
 	<!-- admin pannel -->
 
+	<definition name="adminOTP" extends="commonAdmin">
+		<put-attribute name="title" value="Admin OTP" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/otp.jsp" />
+		<put-attribute name="current" value="otp" />
+	</definition>
+
+	<definition name="complaint" extends="common">
+		<put-attribute name="title" value="Contact US" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ext/contactUs.jsp" />
+		<put-attribute name="current" value="complaint" />
+	</definition>
+
+	<definition name="adminPasswordResetToken" extends="commonAdmin">
+		<put-attribute name="title" value="Admin PasswordResetToken" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/passwordResetToken.jsp" />
+		<put-attribute name="current" value="passwordResetToken" />
+	</definition>
+
+	<definition name="adminVerificationToken" extends="commonAdmin">
+		<put-attribute name="title" value="Admin VerificationToken" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/verificationToken.jsp" />
+		<put-attribute name="current" value="verificationToken" />
+	</definition>
 	<definition name="adminDashboard" extends="commonAdmin">
 		<put-attribute name="title" value="Admin Dashboard" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/welcome.jsp" />
@@ -47,7 +72,7 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/accept.jsp" />
 		<put-attribute name="current" value="accept" />
 	</definition>
-
+	
 	<definition name="adminCommit" extends="commonAdmin">
 		<put-attribute name="title" value="Commit Table" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/commit.jsp" />
@@ -138,12 +163,9 @@
 	<!-- before login complete -->
 
 	<!-- register page -->
-	<!-- <definition name="userRegister" extends="common">
-		<put-attribute name="title" value="User Registration" />
-		<put-attribute name="body" value="/WEB-INF/jsp/userRegister.jsp" />
-		<put-attribute name="current" value="userRegister" />
-	</definition>
-	 --><!-- login and register page COMPLETE -->
+	<!-- <definition name="userRegister" extends="common"> <put-attribute name="title" 
+		value="User Registration" /> <put-attribute name="body" value="/WEB-INF/jsp/userRegister.jsp" 
+		/> <put-attribute name="current" value="userRegister" /> </definition> --><!-- login and register page COMPLETE -->
 
 
 	<!-- User pannel -->

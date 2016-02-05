@@ -1,4 +1,4 @@
-
+﻿
 /*=============================================================
     Authour URI: www.binarytheme.com
     License: Commons Attribution 3.0
@@ -47,7 +47,7 @@
             $("a.preview").prettyPhoto({
                 social_tools: false
             });
-           
+            
            
             /*====================================
             WRITE YOUR SCRIPTS HERE

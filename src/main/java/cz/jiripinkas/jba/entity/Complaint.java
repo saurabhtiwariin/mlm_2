@@ -23,6 +23,8 @@ public class Complaint {
 
 	private String contactNo;
 
+	private String email;
+	
 	@ManyToOne
 	@JoinColumn(name="status_id")
 	private Status status;
@@ -73,6 +75,14 @@ public class Complaint {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	

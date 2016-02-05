@@ -42,14 +42,14 @@ public class SecurityQuestionService {
 		return user.getSecurityQuestion();
 	}
 
-	public List<SecurityQuestion> getTableData() {
+	public List<SecurityQuestion> getTableData(int page) {
 		// TODO Auto-generated method stub
 		logger.info("inside getTableData service");
 		return securityQuestionRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 	}
 
-	public void updateRoleTable(SecurityQuestion tmp) {
+	public void updateSecurityQuestionTable(SecurityQuestion tmp) {
 		// TODO Auto-generated method stub
 		logger.info("inside updateFileUploadTable service");
 

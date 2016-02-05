@@ -1,9 +1,13 @@
 package cz.jiripinkas.jba.service;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import javax.transaction.Transactional;
@@ -113,22 +117,22 @@ public class UserService {
 		roles.add(roleRepository.findByName("ROLE_USER"));
 		user.setRoles(roles);
 
-		user.setDoj(new Date(System.currentTimeMillis()));
+		user.setDoj(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
 
 		userRepository.save(user);
 	}
 
-	public void giveReferralBonusAndPersist(User sponser, User commitUser,
+	public void giveReferralBonusAndPersist( User commitUser,User sponser,
 			long l) {
 
-		long bonus = l / 20;
-
-		long bal = sponser.getBalance();
+		long bonus = l / 10;
+		User refressedSponser = findOne(sponser.getId());
+		long bal = refressedSponser.getBalance();
 		long newBal = bal + bonus;
-
-		sponser.setBalance(newBal);
-		if (userRepository.save(sponser) != null) {
-			transactionService.entryForDirectIncome(commitUser, sponser, bal,
+		refressedSponser.setBalance(newBal);
+		logger.info("Saving sponser "+refressedSponser.getName()+" with pr bal="+bal+" & newbal="+newBal);
+		if (userRepository.saveAndFlush(refressedSponser) != null) {
+			transactionService.entryForDirectIncome(commitUser, refressedSponser, bal,
 					newBal);
 		}
 
@@ -175,10 +179,10 @@ public class UserService {
 
 	}
 
-	public List<User> getTableData() {
+	public List<User> getTableData(int page) {
 		logger.info("inside getTableData service");
 		return userRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 	}
 
 	public void updateUserTable(User tmp) {
@@ -204,7 +208,7 @@ public class UserService {
 		user.setSecurityQuestion(tmp.getSecurityQuestion());
 		user.setSponser(tmp.getSponser());
 		user.setEnabled(tmp.isEnabled());
-
+		user.setLife(tmp.getLife());
 		userRepository.save(user);
 
 	}
@@ -249,6 +253,8 @@ public class UserService {
 
 	public void updateUserBalanceCronJob() {
 		// TODO Auto-generated method stub
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		logger.info("Cron job ran at "+sdf.format(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime()));
 		List<User> users = userRepository.findByEnabled(true);
 		for (User user : users) {
 
@@ -263,7 +269,7 @@ public class UserService {
 			user.setBalance(newBal);
 			user.setLife(user.getLife() + 1);
 			if (user.getLife() == 20) {
-				Role roleAdmin = roleRepository.findOne(2);
+				Role roleAdmin = roleRepository.findByName("ROLE_ADMIN");
 				if (user.getRoles().contains(roleAdmin)) {
 					var=0;
 				}else{
@@ -302,6 +308,30 @@ public class UserService {
 	public User findUserByPanNO(String panNo) {
 		// TODO Auto-generated method stub
 		return userRepository.findByPanNo(panNo);
+	}
+
+	public boolean lockAccount(Integer currentUserId) {
+		// TODO Auto-generated method stub
+		try {
+			User user = findOne(currentUserId);
+			 
+			List<Role> roles = user.getRoles();
+
+			for (Iterator iterator = roles.iterator(); iterator.hasNext();) {
+				Role role = (Role) iterator.next();
+				if (role.getName().equals(roleRepository.findByName("ROLE_ADMIN").getName()) ) {
+					return false;
+				}
+			}
+			
+			user.setEnabled(false);
+			userRepository.saveAndFlush(user);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
+		}
+		
 	}
 
 }

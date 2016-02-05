@@ -1,12 +1,10 @@
 package cz.jiripinkas.jba.controller;
 
 import java.security.Principal;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +22,6 @@ import cz.jiripinkas.jba.service.AcceptService;
 import cz.jiripinkas.jba.service.CommitService;
 import cz.jiripinkas.jba.service.FileUploadService;
 import cz.jiripinkas.jba.service.UserService;
-import cz.jiripinkas.jba.util.JsonToMap;
 
 @Controller
 @EnableWebMvc
@@ -69,13 +66,24 @@ public class MemberZoneController {
 		 * commit to an unprocessed accept request. check:confDate=null and
 		 * commit!=null set:confDate and status_id
 		 */
-		model.addAttribute("helpDataList", acceptService.getHelpData(user));
+		
+		
 
-		model.addAttribute("giveHelpDataList", acceptService.giveHelpData(user));
+		model.addAttribute("dayleft"+(20-user.getLife()), true);
+		model.addAttribute("dayCount",user.getLife());
+		
 
+		model.addAttribute("giveHelpDataList",commitService.giveHelpData(user));
+		model.addAttribute("giveHelpDataListCompleted", commitService.giveHelpDataCompleted(user));
+		
+		model.addAttribute("helpDataList", commitService.getHelpData(user));
+		model.addAttribute("helpDataListCompleted", commitService.getHelpDataCompleted(user));
+		
 		return "memberZone";
 	}
-
+	
+	
+	
 	@ModelAttribute("fileUpload")
 	private FileUpload constructFileUpload() {
 		return new FileUpload();
@@ -83,34 +91,12 @@ public class MemberZoneController {
 
 	@RequestMapping(value = "/memberZone", method = RequestMethod.POST)
 	public String doFileUpload(@RequestParam(value = "url") String url,
-			@RequestParam(value = "acceptId") Integer acceptId,
+			@RequestParam(value = "commitId") Integer commitId,
 			Principal principal, RedirectAttributes redirectAttributes) {
 
-		logger.info("inside doFileUpload **************"+acceptId);
+		logger.info("inside doFileUpload **************"+commitId);
 
-		/*
-		 * Map<String, Object> mappedResponse =
-		 * JsonToMap.JsonToMapConversion(response);
-		 * 
-		 * logger.info(mappedResponse.get("version").toString());
-		 * logger.info(mappedResponse.get("url").toString());
-		 */
-		/*
-		 * if (file != null && file.length > 0) {
-		 * 
-		 * logger.info("inside if **************"); for (CommonsMultipartFile
-		 * aFile : file) { count++; logger.info("Saving file: " +
-		 * aFile.getOriginalFilename());
-		 * 
-		 * fileUploadService.save(aFile, id);
-		 * 
-		 * }
-		 * 
-		 * } logger.info("count multi part " + count);
-		 */
-
-		fileUploadService.save(url, acceptId);
-
+		fileUploadService.save(url, commitId);
 		redirectAttributes.addFlashAttribute("successUpload", true);
 		return "redirect:/user/memberZone.html";
 	}
@@ -151,14 +137,25 @@ public class MemberZoneController {
 
 	@RequestMapping(value = "/acceptPayment")
 	public String acceptPayment(
-			@RequestParam(value = "acceptId") Integer acceptId,
+			@RequestParam(value = "commitId") Integer commitId,
 			RedirectAttributes redirectAttributes) {
-		if (acceptService.acceptPayment(acceptId)) {
+		if (commitService.acceptPayment(commitId)) {
 			redirectAttributes.addFlashAttribute("paymentAccepted", true);
 			return "redirect:/user/memberZone.html";
 		}
 		redirectAttributes.addFlashAttribute("paymentNotAccepted", true);
 		return "redirect:/user/memberZone.html";
 	}
-
+	
+	@RequestMapping(value = "/memberZoneAccountLock",method = RequestMethod.POST)
+	public String memberZoneAccountLock(
+			@RequestParam(value = "currentUserId") Integer currentUserId,
+			RedirectAttributes redirectAttributes) {
+		if (userService.lockAccount(currentUserId)) {
+			return "redirect:/logoutFromCode.html";
+		}else{
+		return "redirect:/user/memberZone.html";
+		}
+	}	
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -51,6 +52,18 @@ public class WithdrawlController {
 		model.addAttribute("user", user);
 		return "withdrawl";
 	}
+	
+	@RequestMapping("/deleteAccept/{id}")
+	public String deleteAccept(@PathVariable int id) {
+		acceptService.delete(id);
+		return "redirect:/admin/accept.html?page=0";
+	}
+	
+	@RequestMapping("/addNewAccept/{id}")
+	public String addNewAccept(@PathVariable int id) {
+		acceptService.addNewAccept(id);
+		return "redirect:/admin/accept.html?page=0";
+	}
 
 	@RequestMapping(value = "/withdrawl", method = RequestMethod.POST)
 	public String doWithdrawl(@Valid @ModelAttribute("accept") Accept accept,Principal principal,
@@ -71,18 +84,28 @@ public class WithdrawlController {
 			return "redirect:/user/memberZone.html";
 		}
 
-		if (commitService.allCommitsShouldBeAccepted(user)) {
+		if (acceptService.allAcceptsShouldNotBeAcceptedExceptFirstAccept(user)) {
 			redirectAttributes.addFlashAttribute("commitNotAcepptedYet", true);
 			return "redirect:/user/memberZone.html";
 		}
-
+		/*
+		 * 1/17/2016 - tism : It will stop withdrawal till you previous commit is accepted
+		 */
+		if (acceptService.allCommitsShouldNotBeAcceptedExceptFirstCommitForAccept(user)) {
+			redirectAttributes.addFlashAttribute("commitNotAcepptedYet", true);
+			return "redirect:/user/memberZone.html";
+		}
+		
 		if (acceptService.tenDayCheck(user)) {
 			redirectAttributes.addFlashAttribute("tenDayCheckFailed", true);
 			return "redirect:/user/memberZone.html";
 		}
 
-		redirectAttributes.addFlashAttribute("success", true);
-		acceptService.save(accept, user);
+		if (acceptService.save(accept, user)) {
+			redirectAttributes.addFlashAttribute("success", true);
+			return "redirect:/user/memberZone.html";			
+		}
+		
 
 		return "redirect:/user/memberZone.html";
 	}

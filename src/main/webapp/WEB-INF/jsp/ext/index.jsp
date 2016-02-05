@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../../layout/taglib.jsp"%>
+<fmt:setBundle basename="messages" />
+<style>
+h2 {
+color:green;
+}
+</style>
 <div id="pre-div">
 	<div id="loader"></div>
 </div>
@@ -10,25 +16,26 @@
 		<div class="container">
 			<div class="row ">
 				<div class="col-lg-9 col-md-9 head-text">
-					<h1 id="divDisp">A 500Rs PROGRAM WHICH CAN CHANGE YOUR ENTIRE
-						LIFE AND BANK BALANCE.</h1>
-					<span> <i class="fa fa-lightbulb-o "></i>Little help is all
-						you need
-					</span> <span> <i class="fa fa-lightbulb-o"></i>We provide you the
-						platform
-					</span> <span> <i class="fa fa-lightbulb-o"></i>We dont but you
-						help each other
-					</span> <span> <i class="fa fa-lightbulb-o"></i>So get ready and
-						fasten your set belts
-					</span> <span> <i class="fa fa-lightbulb-o"></i>Come lets change
-						something
+					<h1 id="divDisp" style="color:yellow;">
+						<spring:message code="index.message.main" />
+					</h1>
+					<span> <i class="fa fa-lightbulb-o "></i> <spring:message
+							code="index.message1" />
+					</span> <span> <i class="fa fa-lightbulb-o"></i><spring:message
+							code="index.message2" />
+					</span> <span> <i class="fa fa-lightbulb-o"></i><spring:message
+							code="index.message3" />
+					</span> <span> <i class="fa fa-lightbulb-o"></i><spring:message
+							code="index.message4" />
+					</span> <span> <i class="fa fa-lightbulb-o"></i><spring:message
+							code="index.message5" />
 					</span>
 				</div>
 				<div class="col-lg-3 col-md-3">
 					<div class="div-trans text-center">
 						<h3>GET IN</h3>
 						<h2>
-							<span>MMMINR</span>
+							<span style="color: green;">MMMINR</span>
 						</h2>
 						<div class="col-lg-12 col-md-12 col-sm-12">
 							<security:authorize access="! isAuthenticated()">
@@ -76,17 +83,17 @@
 				<div
 					class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
 					<h2 data-wow-delay="0.5s" class="wow rollIn animated">
-						<strong>HOW WE CAN HELP ?</strong>
+						<strong><spring:message code="index.para1.heading" /></strong>
 					</h2>
-					<p class="sub-head">Checkout this vedio , how world is changing
-						and prospering by sharing and caring.</p>
+					<p class="sub-head"><spring:message code="index.para1" /></p>
 				</div>
 			</div>
 			<div class="row ">
 
 				<div class="col-lg-6 col-lg-offset-1  col-md-6 col-md-offset-1">
+
 					<iframe width="492" height="277"
-						src="https://www.youtube.com/embed/eMzS_d-s-pk" frameborder="0"
+						src='<spring:message code="index.youtube.link" />' frameborder="0"
 						allowfullscreen></iframe>
 				</div>
 
@@ -97,21 +104,12 @@
 							<i class="fa fa-star-o fa-4x  "></i>
 						</div>
 						<div class="media-body">
-							<h3 class="media-heading">Watch This Vedio</h3>
-							<p>Come and join us...</p>
+							<h3 class="media-heading"><spring:message code="index.para2.heading"/></h3>
+							<p><spring:message code="index.para2"/></p>
 
 						</div>
 					</div>
-					<div class="media wow rotateIn animated" data-wow-delay="0.6s">
-						<div class="pull-left">
-							<i class="fa fa-history fa-4x  "></i>
-						</div>
-						<div class="media-body">
-							<h3 class="media-heading">Donate Some Money</h3>
-							<p>To make this world a better place.</p>
 
-						</div>
-					</div>
 
 				</div>
 			</div>

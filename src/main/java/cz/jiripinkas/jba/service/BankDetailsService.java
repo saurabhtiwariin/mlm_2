@@ -58,10 +58,10 @@ public class BankDetailsService {
 
 	}
 
-	public List<BankDetails> getTableData() {
+	public List<BankDetails> getTableData(int page) {
 		// TODO Auto-generated method stub
 		return bankDetailsRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 	}
 
 	public void updateBankDetailsTable(BankDetails tmp) {
@@ -80,6 +80,11 @@ public class BankDetailsService {
 
 		bankDetailsRepository.save(bankDetails);
 
+	}
+
+	public List<BankDetails> findAll() {
+		// TODO Auto-generated method stub
+		return bankDetailsRepository.findAll();
 	}
 
 }

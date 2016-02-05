@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import cz.jiripinkas.jba.entity.SecurityQuestion;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.entity.VerificationToken;
+import cz.jiripinkas.jba.event.OnRegistrationCompleteEvent;
 import cz.jiripinkas.jba.service.SecurityQuestionService;
 import cz.jiripinkas.jba.service.SmsService;
 import cz.jiripinkas.jba.service.UserService;
@@ -96,11 +98,11 @@ public class RegisterController {
 
 		logger.info("sending mail the enabling link because if not mailed the registration could not be completed.");
 
-/*		final String appUrl = "http://" + request.getServerName() + ":"
+		final String appUrl = "http://" + request.getServerName() + ":"
 				+ request.getServerPort() + request.getContextPath();
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user,
 				request.getLocale(), appUrl));
-*/
+
 		
 		redirectAttributes.addFlashAttribute("success", true);
 		return "redirect:/register.html";
@@ -121,7 +123,7 @@ public class RegisterController {
 		}
 
 		final User user = verificationToken.getUser();
-		final Calendar cal = Calendar.getInstance();
+		final Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("IST"));
 		if ((verificationToken.getExpiryDate().getTime() - cal.getTime()
 				.getTime()) <= 0) {
 			model.addAttribute("message",
@@ -217,60 +219,7 @@ public class RegisterController {
 		Boolean available = userService.findOne(userId) != null;
 		return available.toString();
 	}
-/*
- * used to get position drop down according binary tree rule
- * 
-	@RequestMapping("/availablePositions")
-	@ResponseBody
-	public String availablePositions(
-			@RequestParam("sponserId") Integer sponserId) {
-		int l = 0, r = 0;
-		String res = "";
-		if (sponserId == null) {
-			return "";
-		}
-		User user = userService.findOne(sponserId);
 
-		res += "<select name=\"position\" id=\"position\">";
-
-		if (user != null) {
-			List<User> downlineUsers = userService.findAllDirectMembers(user);
-
-			for (User usr : downlineUsers) {
-				if (usr.getPosition() == 'R') {
-					r = 1;
-				}
-				if (usr.getPosition() == 'L') {
-					l = 1;
-				}
-			}
-
-			if (l == 0 && r == 0) {
-
-				res += "<option value=\"L\">Left</option>";
-				res += "<option value=\"R\">Right</option>";
-
-			}
-			if (l == 0 && r == 1) {
-
-				res += "<option value=\"L\">Left</option>";
-
-			}
-			if (l == 1 && r == 0) {
-
-				res += "<option value=\"R\">Right</option>";
-
-			}
-			if (l == 1 && r == 1) {
-				return "<p class=\"help-block\">Sorry &#128546 It seems sponser ID has already filled his right and left downlines.</p>";
-			}
-
-			res += "</select>";
-			return res;
-		}
-		return "";
-	}
-*/
 	@RequestMapping("/availableSponserName")
 	@ResponseBody
 	public String availableSponserName(@RequestParam Integer sponserId) {
@@ -287,42 +236,6 @@ public class RegisterController {
 				+ user.getName()
 				+ " will be getting 1 day bonus balance as sponser's benefit. His both position is empty.</b>";
 		return res;
-		/*
-		if (user != null) {
-			List<User> downlineUsers = userService.findAllDirectMembers(user);
-			logger.info(downlineUsers.toArray());
-			for (User usr : downlineUsers) {
-				if (usr.getPosition() == 'R') {
-					r = 1;
-				}
-				if (usr.getPosition() == 'L') {
-					l = 1;
-				}
-			}
-			if (l == 0 && r == 0) {
-				res = "<b>Mr/Ms "
-						+ user.getName()
-						+ " will be getting 1 day bonus balance as sponser's benefit. His both position is empty.</b>";
-			}
-			if (l == 0 && r == 1) {
-				res = "<b>Mr/Ms "
-						+ user.getName()
-						+ " will be getting 1 day bonus balance as sponser's benefit. His left position is empty.</b>";
-			}
-			if (l == 1 && r == 0) {
-				res = "<b>Mr/Ms "
-						+ user.getName()
-						+ " will be getting 1 day bonus balance as sponser's benefit. His right position is empty.</b>";
-			}
-			if (l == 1 && r == 1) {
-				return "<p class=\"help-block\">Sorry &#128546 It seems sponser ID has already filled his right and left downlines.</p>";
-			}
-
-			return res;
-		} else {
-			return "<p class=\"help-block\">Sorry &#128546 It seems you entered wrong sponser ID.</p>";
-		}
-*/
 	}
 
 	@RequestMapping(value = "/allSecurityQuestion", method = RequestMethod.GET)

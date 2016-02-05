@@ -1,3 +1,5 @@
+<%@page import="java.util.TimeZone"%>
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -44,6 +46,31 @@
 
 <title><tiles:getAsString name="title" /></title>
 
+<!--[if IE]>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <![endif]-->
+<title>ECOSAVE BOOTSTRAP ENVIRONMENT TEMPLATE</title>
+<!--      Bootstrap Style
+    <link href="/resources/assets/css/bootstrap.css" rel="stylesheet" />
+     Font-Awesome Style
+    <link href="/resources/assets/css/font-awesome.min.css" rel="stylesheet" />
+     Animation Style
+    <link href="/resources/assets/css/animate.css" rel="stylesheet" />
+     Pretty Photo Style
+    <link href="/resources/assets/css/prettyPhoto.css" rel="stylesheet" />
+     Google Font Style
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+     Custom Style
+    <link href="/resources/assets/css/style.css" rel="stylesheet" />
+ -->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+
+
 <!-- dev scripts and css -->
 
 <!-- <link href="/resources/mlmDevScripts/bootstrap.min.css" rel="stylesheet" />
@@ -62,7 +89,7 @@
 <script src="/resources/mlmDevScripts/jquery.prettyPhoto.min.js"></script>
 <script src="/resources/mlmDevScripts/jquery.vegas.min.js"></script>
 <script src="/resources/mlmDevScripts/wow.min.js"></script>
- --> 
+ -->
 <!-- dev scripts and css -->
 
 
@@ -77,21 +104,26 @@
 
 <!-- prod css -->
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous">
+<!--  Pretty Photo Style -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css"
+	rel="stylesheet" />
 <link rel="stylesheet"
 	href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+<link href="/resources/mlmDevScripts/font-awesome-animation.min.css"
+	rel="stylesheet" />
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.0/animate.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/prettyPhoto/3.1.6/js/jquery.prettyPhoto.min.js" />
+
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/prettyPhoto/3.1.6/css/prettyPhoto.min.css"
+	rel="stylesheet" />
+
 <link
 	href='http://fonts.googleapis.com/css?family=Open Sans:400,300,700'
 	rel='stylesheet' type='text/css'>
 
- <link href="/resources/assets/css/style.css" rel="stylesheet" />
+<link href="/resources/assets/css/style.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -114,15 +146,17 @@
 			</div>
 			<div class="navbar-collapse collapse move-me">
 				<ul class="nav navbar-nav navbar-right">
-
+					
 					<li><a href='<spring:url value="/index.html"/>'>Home</a></li>
-					<li><a href='<spring:url value="/program.html"/>'>PROGRAM</a></li>
+					<security:authorize access="isAuthenticated()">
+						<li><a href='<spring:url value="/program.html"/>'>PROGRAM</a></li>
+					</security:authorize>
 					<li><a href='<spring:url value="/faq.html"/>'>FAQ</a></li>
 					<li><a href='<spring:url value="/ss.html"/>'>SUCCESS
 							STORIES </a></li>
 					<li><a href='<spring:url value="/about.html"/>'>ABOUT </a></li>
-					<li><a href='<spring:url value="/contactUs.html"/>'>CONTACT</a></li>
-
+ 					<li><a href='<spring:url value="/complaint.html"/>'>CONTACT</a></li>
+ 
 					<security:authorize access="! isAuthenticated()">
 						<li><a href='<spring:url value="/forgetPassword.html"/>'><spring:message
 									code="message.resetPassword" /></a></li>
@@ -157,9 +191,8 @@
 		</div>
 	</div>
 	<!--./ FOOTER SECTION END -->
- 
 	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
@@ -170,8 +203,21 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/prettyPhoto/3.1.6/js/jquery.prettyPhoto.min.js"></script>
- 
-	<script src="/resources/assets/js/custom.js"></script>
 
+	<script src="/resources/assets/js/custom.js"></script>
+	<!-- 
+   Jquery Core Script
+    <script src="/resources/assets/js/jquery-1.10.2.js"></script>
+     Core Bootstrap Script
+    <script src="/resources/assets/js/bootstrap.js"></script>
+      WOW Script
+    <script src="/resources/assets/js/wow.min.js"></script>
+     Scrolling Script
+    <script src="/resources/assets/js/jquery.easing.min.js"></script>
+     PrettyPhoto Script
+    <script src="/resources/assets/js/jquery.prettyPhoto.js"></script>
+     Custom Scripts
+    <script src="/resources/assets/js/custom.js"></script>
+  -->
 </body>
 </html>

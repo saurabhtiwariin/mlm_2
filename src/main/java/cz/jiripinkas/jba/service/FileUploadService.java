@@ -11,9 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import cz.jiripinkas.jba.entity.Accept;
+import cz.jiripinkas.jba.entity.Commit;
 import cz.jiripinkas.jba.entity.FileUpload;
 import cz.jiripinkas.jba.repository.AcceptRepository;
+import cz.jiripinkas.jba.repository.CommitRepository;
 import cz.jiripinkas.jba.repository.FileUploadRepository;
+import cz.jiripinkas.jba.repository.StatusRepository;
 
 @Service
 public class FileUploadService {
@@ -24,7 +27,13 @@ public class FileUploadService {
 	private FileUploadRepository fileUploadRepository;
 
 	@Autowired
+	private StatusRepository statusRepository;
+
+	@Autowired
 	private AcceptRepository acceptRepository;
+
+	@Autowired
+	private CommitRepository commitRepository;
 
 	@Autowired
 	private AcceptService acceptService;
@@ -32,17 +41,20 @@ public class FileUploadService {
 	@Autowired
 	private CommitService commitService;
 	
-	public void save(String url, int acceptId) {
+	public void save(String url, int commitId) {
 		// TODO Auto-generated method stub
 		FileUpload uploadFile = new FileUpload();
 		uploadFile.setUrl(url);
 		// uploadFile.setImage(decodeImage());
 		
-		Accept accept = acceptRepository.findOne(acceptId);
-		uploadFile.setAccept(accept);
-		acceptService.setStatus(accept,2);
-		commitService.setChequeUploadDate(accept.getCommit());
+		Commit commit = commitRepository.findOne(commitId);
+		uploadFile.setCommit(commit);
 		fileUploadRepository.save(uploadFile);
+		
+		commitService.setStatus(commit, statusRepository.findByName("SUBMITTED").getId());
+		commitService.setChequeUploadDate(commit);
+		commitService.setLifeTimestamp36HoursBack(commit);
+		
 	}
 	
 	public void save(CommonsMultipartFile aFile, Integer acceptId) {
@@ -96,23 +108,26 @@ public class FileUploadService {
 		return fileUploadRepository.findOne(id);
 	}
 
-	public List<FileUpload> getTableData() {
+	public List<FileUpload> getTableData(int page) {
 		// TODO Auto-generated method stub
 		logger.info("inside getTableData service");
 		return fileUploadRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 	}
 
 	public void updateFileUploadTable(FileUpload tmp) {
 		logger.info("inside updateFileUploadTable service");
-/*
+
 		Integer idtmp = tmp.getId();
 		FileUpload fileUpload = fileUploadRepository.findOne(idtmp);
-		fileUpload.setAccept(tmp.getAccept());
-		fileUpload.setFileName(tmp.getFileName());
-		fileUpload.setImage(tmp.getImage());
-		fileUploadRepository.save(fileUpload);*/
+		fileUpload.setCommit(tmp.getCommit());
+		fileUpload.setUrl(tmp.getUrl());
+		fileUploadRepository.save(fileUpload);
+	}
 
+	public List<FileUpload> findAll() {
+		// TODO Auto-generated method stub
+		return fileUploadRepository.findAll();
 	}
 
 	

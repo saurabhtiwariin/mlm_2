@@ -3,31 +3,7 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-  <style type='text/css'>
- 
-table {
-    border: 1px solid black;
-    width:100%;
-}
-th {
-    border: 1px solid black;
-    padding: 5px;
-    background-color:grey;
-    color: white;
-}
-td {
-background-color:white;
-    color: black;
-    border: 1px solid black;
-    padding: 5px;
-}
-input {
-    font-size: 12pt;
-    font-family: Calibri;
-}
-  </style>
-  
-
+<link href="/resources/assetsUser/css/table.css" rel="stylesheet" />
 
 <!--SERVICES SECTION-->
 <section class="for-full-back color-bg-one">

@@ -23,6 +23,7 @@
 			<list>
 				<value>classpath:email.properties</value>
 				<value>classpath:jdbc.properties</value>
+				<value>classpath:cron.properties</value>
 			</list>
 		</property>
 	</bean>

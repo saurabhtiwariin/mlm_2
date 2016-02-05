@@ -50,9 +50,12 @@
 
  
  <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-	integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-	crossorigin="anonymous">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+ <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+
+
 <link rel="stylesheet"
 	href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
 <link rel="stylesheet"
@@ -64,8 +67,7 @@
  <link
 	href='http://fonts.googleapis.com/css?family=Open Sans:400,300,700'
 	rel='stylesheet' type='text/css'>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/3.2.5/inputmask/inputmask.min.js"></script>
 
@@ -123,7 +125,7 @@
 	<!--END MAIN HEADING-->
 	<!--LEFT SLIDE MENU-->
 	<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left"
-		id="cbp-spmenu-s1">
+		id="cbp-spmenu-s1" >
 		<h3>Quick Links</h3>
 		<a href='<spring:url value="/user/memberZone.html"></spring:url>'><i></i>HOME</a>
 		<a href='<spring:url value="/user/editProfile.html"></spring:url>'><i></i>EDIT

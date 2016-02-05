@@ -3,4 +3,5 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-Welcome
+
+<h2 class="sub-header">Welcome</h2>

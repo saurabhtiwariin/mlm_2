@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import cz.jiripinkas.jba.entity.Transaction;
 import cz.jiripinkas.jba.entity.User;
 import cz.jiripinkas.jba.service.AcceptService;
 import cz.jiripinkas.jba.service.BankDetailsService;
@@ -46,14 +47,18 @@ public class HyperlinkControllerUser {
 	}
 
 	@RequestMapping("/directIncome")
-	public String getDirectIncome() {
+	public String getDirectIncome(Model model, Principal principal) {
+		User user = userService.findOne(principal);
+		List<Transaction> transactions =transactionService.findByUser(user,"directIncome");
+		model.addAttribute("transactions", transactions);
+		
 		return "directIncome";
 	}
-
+	
 	@RequestMapping("/withdrawlReport")
 	public String getWithdrawlReport(Model model, Principal principal) {
 		User user = userService.getUser(principal);
-		user.setAccepts(acceptService.getHelpData(user));
+		user.setAccepts(acceptService.getAllAccepts(user).getAccepts());
 		model.addAttribute("user",user);
 		return "withdrawlReport";
 	}

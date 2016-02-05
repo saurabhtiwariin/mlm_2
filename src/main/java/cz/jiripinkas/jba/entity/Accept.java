@@ -1,14 +1,14 @@
 package cz.jiripinkas.jba.entity;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -24,8 +24,10 @@ public class Accept {
 	@Id
 	@GeneratedValue
 	private Integer id;
-
+	
 	private long amount;
+
+	private long originalAmount;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
@@ -39,16 +41,31 @@ public class Accept {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	private String born;
+
 	@ManyToOne
 	@JoinColumn(name = "status_id")
 	private Status status;
 
-	@OneToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "commit_id")
-	private Commit commit;
+	@OneToMany(mappedBy = "accept")
+	private List<Commit> commits;
 
-	@OneToOne(mappedBy = "accept", cascade = CascadeType.REMOVE)
-	private FileUpload fileUpload;
+	public Accept() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Accept(long amount, long originalAmount, Date reqDate,
+			Date confDate, User user, String born, Status status) {
+		super();
+		this.amount = amount;
+		this.originalAmount = originalAmount;
+		this.reqDate = reqDate;
+		this.confDate = confDate;
+		this.user = user;
+		this.born = born;
+		this.status = status;
+	}
 
 	public Integer getId() {
 		return id;
@@ -92,22 +109,6 @@ public class Accept {
 		this.status = status;
 	}
 
-	public Commit getCommit() {
-		return commit;
-	}
-
-	public void setCommit(Commit commit) {
-		this.commit = commit;
-	}
-
-	public FileUpload getFileUpload() {
-		return fileUpload;
-	}
-
-	public void setFileUpload(FileUpload fileUpload) {
-		this.fileUpload = fileUpload;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -116,5 +117,35 @@ public class Accept {
 		this.user = user;
 	}
 
+	
 
+	public List<Commit> getCommits() {
+		return commits;
+	}
+
+
+	public void setCommits(List<Commit> commits) {
+		this.commits = commits;
+	}
+
+
+	public long getOriginalAmount() {
+		return originalAmount;
+	}
+
+
+	public void setOriginalAmount(long originalAmount) {
+		this.originalAmount = originalAmount;
+	}
+
+
+	public String getBorn() {
+		return born;
+	}
+
+
+	public void setBorn(String born) {
+		this.born = born;
+	}
+	
 }

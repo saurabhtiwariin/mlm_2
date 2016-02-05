@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -61,15 +62,25 @@ public class CommitmentController {
 			return "/commitment";
 		}
 		
-		if(commit.getAmount()==0 || commit.getAmount() % 500 != 0){
+		User user = userService.findOne(principal);
+		
+		long amt = commit.getAmount();
+		if(amt==0 || amt % 500 != 0 || amt > 200000 ){
 			redirectAttributes.addFlashAttribute("invalidCommitAmount", true);	
 			return "redirect:/user/memberZone.html";	
+		}
+		
+		if (commitService.allCommitsShouldNotBeAcceptedExceptFirstCommit(user)) {
+			redirectAttributes.addFlashAttribute("commitNotAcepptedYet", true);
+			return "redirect:/user/memberZone.html";
 		}
 		
 		if (commitService.save(commit,principal.getName())) {
 			redirectAttributes.addFlashAttribute("success", true);
 			return "redirect:/user/memberZone.html";			
 		}
+		
+		
 		redirectAttributes.addFlashAttribute("success", false);
 		return "redirect:/user/memberZone.html";
 
@@ -86,6 +97,15 @@ public class CommitmentController {
 		return "commitmentReport";
 	}
 	
+	@RequestMapping("/addNewCommit")
+	public String addNewCommit(@RequestParam("commitId") Integer commitId) {
+		commitService.addNewCommit(commitId);
+		return "redirect:/admin/commit.html?page=0";
+	}
 	
-	
+	@RequestMapping("/deleteCommit")
+	public String deleteCommit(@RequestParam("commitId") Integer commitId) {
+		commitService.deleteCommit(commitId);
+		return "redirect:/admin/commit.html?page=0";
+	}
 }

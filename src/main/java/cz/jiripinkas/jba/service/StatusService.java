@@ -30,10 +30,10 @@ public class StatusService {
 		return statusRepository.findOne(statusId);
 	}
 
-	public List<Status> getTableData() {
+	public List<Status> getTableData(int page) {
 		logger.info("inside getTableData service");
 		return statusRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 		}
 	
 	public void updateStatusTable(Status tmp) {
@@ -47,6 +47,11 @@ public class StatusService {
 
 		statusRepository.save(status);
 		
+	}
+
+	public Status findByName(String string) {
+		// TODO Auto-generated method stub
+		return statusRepository.findByName(string);
 	}
 
 }

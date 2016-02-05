@@ -3,43 +3,64 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
+<link rel="stylesheet" href="/resources/dist/css/table.css" />
+  <style>
+input {
+	width: 90px;
+}
+</style>
 
-<h2 class="sub-header">Accept Table</h2>
-<div class="table-responsive">
-	<table class="table table-striped">
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".triggerRemove").click(function(e) {
+			e.preventDefault();
+			$("#modalRemove .removeBtn").attr("href", $(this).attr("href"));
+			$("#modalRemove").modal();
+		});
+
+	});
+</script>
+
+<div>
+	<table>
 		<thead>
 			<tr>
+				<th colspan="3">ACTION</th>
 				<th>ID</th>
 				<th>AMOUNT</th>
-				<th>CONFIRMATION DATE</th>
-				<th>Request Date</th>
-				<th>COMMIT ID</th>
+				<th>Original AMOUNT</th>
 				<th>STATUS ID</th>
 				<th>USER ID</th>
+				<th>Request Date</th>
+				<th>CONFIRMATION DATE</th>
+				<th>Born</th>
+
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${accepts}" var="accept">
 
-				<%-- action="/admin/accept/update/${accept.id}.html" method="post" --%>
-
 				<form:form commandName="accept">
 					<tr>
+						<td><input type="submit" value="Update"
+							class="btn btn-danger" /></td>
+						<td><a
+							href='<spring:url value="/user/deleteAccept/${accept.id}.html"/>'
+							class="btn btn-danger triggerRemove">Delete</a></td>
+						<td><a
+							href='<spring:url value="/user/addNewAccept/${accept.id}.html"/>'
+							class="btn btn-info">ADD</a></td>
+
 						<td><form:input path="id" value="${accept.id }" /></td>
 						<form:errors path="id" />
 
 						<td><form:input path="amount" value="${accept.amount}" /></td>
 						<form:errors path="amount" />
 
-						<td><form:input path="confDate" value="${accept.confDate}" /></td>
-						<form:errors path="confDate" />
 
-						<td><form:input path="reqDate" value="${accept.reqDate}" /></td>
-						<form:errors path="reqDate" />
-
-						<td id="commitDiv"><form:input path="commit.id"
-								value="${accept.commit.id}" /></td>
-						<form:errors path="commit.id" />
+						<td><form:input path="originalAmount"
+								value="${accept.originalAmount}" /></td>
+						<form:errors path="originalAmount" />
 
 						<td><form:input path="status.id" value="${accept.status.id}" /></td>
 						<form:errors path="status.id" />
@@ -47,58 +68,54 @@
 						<td><form:input path="user.id" value="${accept.user.id}" /></td>
 						<form:errors path="user.id" />
 
-						<td><input type="submit" value="Update" class="btn btn-gray5" /></td>
+						<td><form:input path="reqDate" value="${accept.reqDate}" /></td>
+						<form:errors path="reqDate" />
+
+						<td><form:input path="confDate" value="${accept.confDate}" /></td>
+						<form:errors path="confDate" />
+
+						<td><form:input path="born" value="${accept.born}" /></td>
+						<form:errors path="born" />
+
 					</tr>
 				</form:form>
 
 			</c:forEach>
 		</tbody>
 	</table>
+
+	<ul class="pagination pagination-sm">
+		<li><a href="">&laquo;</a></li>
+
+		<%
+			int allPages = (Integer) request.getAttribute("allPages");
+			for (int i = 0; i < allPages; i++) {
+		%>
+		<c:set var="i" value="<%=i%>" />
+		<li class="${page == i ? 'active' : ''}"><a
+			href="/admin/accept.html?page=<%=i%>"><%=i + 1%></a></li>
+		<%
+			}
+		%>
+
+		<li><a href="">&raquo;</a></li>
+	</ul>
 </div>
-
-
-<!-- <!-- <script type="text/javascript">
-	$(document).ready(function() {
-
-		$("#commitDiv").focusout(function(event) {
-		}, function(event) {
-			var st = $("#statusId").val();
-			$("#statusDiv").load("/admin/allStatuses.html", {
-				"st" : st
-			});
-		});
-
-	});
-</script>
-
- -->
-
-<%-- 						<td><form:input  value="${accept.id }" path="id"/></td>
-						<td><form:input path="amount" value="${accept.amount}" /></td>
-						<td><form:input path="confDate" value="${accept.confDate}" /></td>
-						<td><form:input path="reqDate" value="${accept.reqDate}" /></td>
-						<td><form:input path="commit" value="${accept.commit.id}" /></td>
-						<td><form:input path="status" value="${accept.status.id}" /></td>
-						<td><form:input path="user" value="${accept.user.id}" /></td>
- --%>
-<%-- 
-<c:forEach items="${accepts}" var="accept">
-				<tr>
-					<td><c:out value="${accept.id }" /></td>
-					<td><c:out value="${accept.amount }" /></td>
-					<td><c:out value="${accept.confDate }" /></td>
-					<td><c:out value="${accept.reqDate }" /></td>
-					<td><c:out value="${accept.commit.id }" /></td>
-					<td><c:out value="${accept.status.name }" /></td>
-					<td><c:out value="${accept.user.id }" /></td>
-				</tr>
-			</c:forEach> --%>
-
-<%--  						<td><input type="text" name="id" value="${accept.id }"  /></td>
-						<td><input type="text" name="amount" value="${accept.amount}" /></td>
-						<td><input type="text" name="confDate" value="${accept.confDate}" /></td>
-						<td><input type="text" name="reqDate" value="${accept.reqDate}" /></td>
-						<td><input type="text" name="commit" value="${accept.commit.id}" /></td>
-						<td><input type="text" name="status" value="${accept.status.id}" /></td>
-						<td><input type="text" name="user" value="${accept.user.id}" /></td>
-			 --%>
+<!-- Modal -->
+<div class="modal fade" id="modalRemove" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">Delete Withdrawl</h4>
+			</div>
+			<div class="modal-body">Really delete?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<a href="" class="btn btn-danger removeBtn">Delete</a>
+			</div>
+		</div>
+	</div>
+</div>

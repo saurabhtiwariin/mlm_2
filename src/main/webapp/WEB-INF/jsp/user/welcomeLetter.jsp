@@ -3,7 +3,6 @@
 
 <%@ include file="../../layout/taglib.jsp"%>
 
-
 <div class="myClass">
 
 	<table width="100%">

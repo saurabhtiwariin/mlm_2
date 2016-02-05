@@ -3,6 +3,7 @@ package cz.jiripinkas.jba.entity;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ public class OTP {
  
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
      
     private String otp;
     
@@ -34,7 +35,7 @@ public class OTP {
     }
      
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("IST"));
         cal.setTime(new Timestamp(cal.getTime().getTime()));
         cal.add(Calendar.MINUTE, expiryTimeInMinutes);
         return new Date(cal.getTime().getTime());
@@ -44,10 +45,12 @@ public class OTP {
         this.otp = otp;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
-	public Long getId() {
+	
+
+	public Integer getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getOtp() {

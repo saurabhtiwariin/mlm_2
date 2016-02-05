@@ -6,4 +6,6 @@ import cz.jiripinkas.jba.entity.Status;
 
 public interface StatusRepository extends JpaRepository<Status, Integer> {
 
+	Status findByName(String string);
+
 }

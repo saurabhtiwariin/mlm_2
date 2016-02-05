@@ -1,16 +1,13 @@
 package cz.jiripinkas.jba.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SelectBeforeUpdate;
-import org.hibernate.annotations.Type;
 
 @Entity
 @SelectBeforeUpdate(value=true)
@@ -23,8 +20,8 @@ public class FileUpload {
 	private String url;
 
 	@OneToOne
-	@JoinColumn(name = "accept_id")
-	private Accept accept;
+	@JoinColumn(name="commit_id")
+	private Commit commit;
 
 	public Integer getId() {
 		return id;
@@ -42,12 +39,12 @@ public class FileUpload {
 		this.url = url;
 	}
 
-	public Accept getAccept() {
-		return accept;
+	public Commit getCommit() {
+	    return commit;
 	}
 
-	public void setAccept(Accept accept) {
-		this.accept = accept;
+	public void setCommit(Commit param) {
+	    this.commit = param;
 	}
 
 

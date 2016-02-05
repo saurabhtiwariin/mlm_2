@@ -26,9 +26,19 @@ public class Commit {
 
 	private long amount;
 
+	private long originalAmount;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date lifeTimestamp;
+	
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateCommit;
+
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date dateLinked;
 
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -46,14 +56,24 @@ public class Commit {
 	@JoinColumn(name = "status_id")
 	private Status status;
 
-	@OneToOne(mappedBy = "commit")
+
+	@ManyToOne
+	@JoinColumn(name = "accept_id")
 	private Accept accept;
 
-	public Status getStatus() {
-		return status;
+	@OneToOne(mappedBy = "commit")
+	private FileUpload fileUpload;
+
+	public Commit() {
+		super();
 	}
 
-	public void setStatus(Status status) {
+	public Commit(long amount, Date dateCommit, User user, Status status) {
+		super();
+		this.amount = amount;
+		this.dateCommit = dateCommit;
+
+		this.user = user;
 		this.status = status;
 	}
 
@@ -81,6 +101,14 @@ public class Commit {
 		this.dateCommit = dateCommit;
 	}
 
+	public Date getDateChequeUploaded() {
+		return dateChequeUploaded;
+	}
+
+	public void setDateChequeUploaded(Date dateChequeUploaded) {
+		this.dateChequeUploaded = dateChequeUploaded;
+	}
+
 	public Date getDateConf() {
 		return dateConf;
 	}
@@ -97,20 +125,54 @@ public class Commit {
 		this.user = user;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public Accept getAccept() {
-		return accept;
+	    return accept;
 	}
 
-	public void setAccept(Accept accept) {
-		this.accept = accept;
+	public void setAccept(Accept param) {
+	    this.accept = param;
 	}
 
-	public Date getDateChequeUploaded() {
-		return dateChequeUploaded;
+	public FileUpload getFileUpload() {
+	    return fileUpload;
 	}
 
-	public void setDateChequeUploaded(Date dateCheckUploaded) {
-		this.dateChequeUploaded = dateCheckUploaded;
+	public void setFileUpload(FileUpload param) {
+	    this.fileUpload = param;
 	}
 
+	public Date getLifeTimestamp() {
+		return lifeTimestamp;
+	}
+
+
+	public void setLifeTimestamp(Date lifeTimestamp) {
+		this.lifeTimestamp = lifeTimestamp;
+	}
+
+	public Date getDateLinked() {
+		return dateLinked;
+	}
+
+	public void setDateLinked(Date dateLinked) {
+		this.dateLinked = dateLinked;
+	}
+
+	public long getOriginalAmount() {
+		return originalAmount;
+	}
+
+	public void setOriginalAmount(long originalAmount) {
+		this.originalAmount = originalAmount;
+	}
+	
+	
 }

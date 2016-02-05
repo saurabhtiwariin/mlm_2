@@ -1,7 +1,9 @@
 package cz.jiripinkas.jba.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.transaction.Transactional;
 
@@ -40,10 +42,10 @@ public class TransactionService {
 		return transactions;
 	}
 
-	public List<Transaction> getTableData() {
+	public List<Transaction> getTableData(int page) {
 		logger.info("inside getTableData service");
 		return transactionRepository.findAll(
-				new PageRequest(0, 20, Direction.DESC, "dateTransaction"))
+				new PageRequest(page, 10, Direction.ASC, "id"))
 				.getContent();
 	}
 
@@ -76,7 +78,7 @@ public class TransactionService {
 		transaction.setAmount(commit.getAmount());
 		transaction.setBalBeforeTran(user.getBalance());
 		transaction.setBalAfterTran(newBal);
-		transaction.setDateTransaction(new Date(System.currentTimeMillis()));
+		transaction.setDateTransaction(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
 		transaction.setRemark("commit");
 		transaction.setUser(user);
 		transactionRepository.saveAndFlush(transaction);
@@ -89,7 +91,7 @@ public class TransactionService {
 		transaction.setAmount(accept.getAmount());
 		transaction.setBalBeforeTran(user.getBalance());
 		transaction.setBalAfterTran(newBal);
-		transaction.setDateTransaction(new Date(System.currentTimeMillis()));
+		transaction.setDateTransaction(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
 		transaction.setRemark("accept");
 		transaction.setUser(user);
 		transactionRepository.saveAndFlush(transaction);
@@ -97,17 +99,22 @@ public class TransactionService {
 		
 	}
 
-	public void entryForDirectIncome(User sponser, User commitUser, long bal, long newBal) {
+	public void entryForDirectIncome(User commitUser,User sponser, long bal, long newBal) {
 		// TODO Auto-generated method stub
 		Transaction transaction = new Transaction();
 		transaction.setBalBeforeTran(bal);
 		transaction.setBalAfterTran(newBal);
-		transaction.setDateTransaction(new Date(System.currentTimeMillis()));
-		transaction.setRemark("directIncome by "+commitUser.getName()+" from your "+commitUser.getPosition()+" downline.");
+		transaction.setDateTransaction(Calendar.getInstance(TimeZone.getTimeZone("IST")).getTime());
+		transaction.setRemark("directIncome");
 		transaction.setUser(sponser);
 		transactionRepository.saveAndFlush(transaction);
 		logger.info("Entry made to transaction table with for user="+sponser.getName());
 		
+	}
+
+	public List<Transaction> findAll() {
+		// TODO Auto-generated method stub
+		return transactionRepository.findAll();
 	}
 
 

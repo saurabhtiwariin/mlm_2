@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<script
-	src="/resources/mlmDevScripts/jquery.min.js"></script>
+
 <script type="text/javascript"
-	src="/resources/mlmDevScripts/dropzone.js"></script>
+	src="/resources/assetsUser/js/dropzone.js"></script>
 <link rel="stylesheet"
-	href="/resources/mlmDevScripts/dropzone.css">
+	href="/resources/assetsUser/css/dropzone.css">
 
 
 <div id="dropzone-area" class="dropzone"></div>

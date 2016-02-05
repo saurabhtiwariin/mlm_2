@@ -23,11 +23,11 @@ public class ComplaintService {
 	@Autowired
 	private ComplaintRepository complaintRepository;
 
-	public List<Complaint> getTableData() {
+	public List<Complaint> getTableData(int page) {
 		// TODO Auto-generated method stub
 		logger.info("inside getTableData service");
 		return complaintRepository.findAll(
-				new PageRequest(0, 20, Direction.ASC, "id")).getContent();
+				new PageRequest(page, 10, Direction.ASC, "id")).getContent();
 	}
 
 	public void updateComplaintTable(Complaint tmp) {
@@ -42,6 +42,16 @@ public class ComplaintService {
 		complaint.setUser(tmp.getUser());
 
 		complaintRepository.save(complaint);
+	}
+
+	public List<Complaint> findAll() {
+		// TODO Auto-generated method stub
+		return complaintRepository.findAll();
+	}
+
+	public Complaint save(Complaint tmp) {
+		// TODO Auto-generated method stub
+		return complaintRepository.saveAndFlush(tmp);
 	}
 
 }
