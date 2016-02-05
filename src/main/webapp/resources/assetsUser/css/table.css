@@ -1,0 +1,22 @@
+@CHARSET "ISO-8859-1";
+
+table {
+    border: 1px solid #3B5998;
+    width:100%;
+}
+th {
+    border: 1px solid #3B5998;
+    padding: 5px;
+    background-color:#3B5998;
+    color: white;
+}
+td {
+background-color:white;
+    color: black;
+    border: 1px solid black;
+    padding: 5px;
+}
+input {
+    font-size: 12pt;
+    font-family: Calibri;
+}
